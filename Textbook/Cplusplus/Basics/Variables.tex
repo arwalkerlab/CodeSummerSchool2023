@@ -1,4 +1,4 @@
-\section{Variables and Math}
+\section{Variables}
 The code block below introduces \texttt{int} and \texttt{double} variable types.  Integers are whole numbers and doubles are floating-point numbers, or decimals, or simply floats.
 In C++, variables must be \textbf{declared} before they can be assigned a value, retrieved, or modified.
 
@@ -39,7 +39,7 @@ Notice the way each of the different sections are written.  The numerical values
 
 It is important to keep these things in mind when working with numerical values in C++.
 
-\subsection{Constants}
+\subsection*{Constants}
 It is sometimes useful for us to have values stored as variables that we can adjust once rather than trying to find every instance of them in our code if we need to change them.  For example, we might need to use $\pi$ in a program, but may only need a few decimal places.  Later on, we might find that we need more than a few decimals, and it would be easiest for us if we just had to change one value.  It's also safer because we reduce the risk of introducing an error through a typo in the number if we only have to enter it once.
 
 This is where the use of a \texttt{const} comes in handy.  We add \texttt{const} before a variable type to indicate that the variable is not allowed to be changed during the execution of the program.  In the example with $\pi$, it would look something like this.
@@ -50,7 +50,7 @@ const double PI=3.1415;
 
 In general, constants are declared outside of the scope of functions so that they can be used everywhere.
 
-\subsection{Strings}
+\subsection*{Strings}
 Strings are also known as arrays of characters, or chars.  Both options can be used in C++, however it is important to know the differences in how they can be used.
 Strings in C++ have some built-in functions that can be used to find patterns and substrings, modify strings, and slice them.  The code below illustrates the two different variable declarations.  Note that the \texttt{char*} variable is also defined in the same line.
 

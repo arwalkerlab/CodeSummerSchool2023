@@ -1,7 +1,7 @@
 \section{Arguments}
 Arguments are the pieces of information we're passing to the function inside the parentheses whenever we call it.  Each argument needs its own datatype.  There are two ways in which arguments may be passed to a function, and both have very specific outcomes.  In general, it's a good idea to use the first unless you specifically \textbf{need} to use the second.
 
-\subsection{Pass-By-Value}
+\subsection*{Pass-By-Value}
 The first method of argument passing is called "pass-by-value", and is the standard way of sending information to a function.  Let's see an example below.
 
 \begin{minted}{c++}
@@ -47,7 +47,7 @@ void print_this(string var1)
 \end{minted}
 
 This code block shows us two different functions, both using pass-by-value.  What this means is that the program sends the value of the variable to the function, \textit{not the variable itself}.  Think of it like sending a copy of the static value at the time of the function call, rather than the original.  Pass-by-value maintains the scope of the variables.  In the \texttt{main()} function above, the line that reads \texttt{answer = multiple(my\_var1,my\_var2)} is interpreted at execution to be \texttt{answer = multiple(10.5,2.0)}.  If we compile and run the code block above, we will see that the value of \texttt{my\_var1} and \texttt{my\_var2} do not change during the execution of the function itself, even though the value inside the function does change.
-\subsection{Pass-By-Reference}
+\subsection*{Pass-By-Reference}
 Pass-by-reference allows us to modify variables inside a function and have those modifications hold after exiting that function.  The function, rather than taking the \textbf{value} of the variable being passed, takes the \textbf{memory location} of the variable, and changes the data at that location.  Pass-by-reference is signified by including the ampersand (\&) character with the variable name in the function declaration and definition.  Let's look at the above code block after modifying it to be pass-by-reference.
 
 \begin{minted}{c++}

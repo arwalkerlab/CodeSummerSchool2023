@@ -1,7 +1,7 @@
 \section{How Libraries and Header Files Work}
 Libraries and headers both allow you to add additional functionality to your programs without having to code them all from scratch. However, there are some differences between them.
 
-\subsection{Headers}
+\subsection*{Headers}
 Headers are plain-text files that contain information used in libraries, such as new data types, constants, library-specific classes, and function declarations.  Headers are added to programs with the \texttt{\#include} command that we're familiar with.  By convention, header files end in \texttt{.h}, 
 
 Below is an example header file.
@@ -35,7 +35,7 @@ However, if our code includes \texttt{using namespace geom;} after including thi
 
 Headers can be written without namespaces, however you will want to be careful of your function, class, and variable names and be sure they don't conflict with anything else in use in any of the libraries or source codes you're using.  In general, it's recommended that anything you create be contained in a namespace.
 
-\subsection{Libraries}
+\subsection*{Libraries}
 Libraries are sometimes already compiled into machine language and are not "human-readable" files.  Libraries are usually accessed during compilation of your main program as part of the linking process.  Many pre-compiled libraries are available for free, and learning their use can provide improved access to hardware-specific functionality or better algorithms without having to create them all yourself.  The source code for libraries is usually written in the same language and format as their associated header files.  Where headers had only declarations, library source files will have the complete function definition, class definitions, etc.
 
 Below is an example library source file to go with the above header file.

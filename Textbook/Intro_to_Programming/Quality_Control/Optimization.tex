@@ -1,0 +1,80 @@
+\section{Optimization}
+\paragraph{} There are many ways in which code can be optimized, depending entirely on what aspect of the problem you wish to tackle first.
+Ultimately, every optimization is an attempt to reduce the usage of available resources.
+These resources can be computational, like the amount of RAM used by a program (lookin' at you, Chrome), or the amount of processor power needed.
+They can also be non-computational, such as the overall amount of time needed to run a program, or the level of human involvement necessary during program execution.
+
+\subsection*{Memory Management}
+\paragraph{} Part of programming is the assignment of memory (RAM) to specific variables for the storage of data.
+Often, programmers will use variables to hold information they need to use later as a matter of convenience.
+However, each variable requires memory allocation, and eventually a programmer will run afoul of the hard limit that is the amount of available RAM in their computer.
+There are a number of things that can be done to reduce memory usage in a program.
+
+First, you can check for variables that are assigned and never used.  
+Most modern compilers will alert when these are encountered, but will continue to compile regardless.
+Second, you can see what variables are assigned and then immediately used and then never used again.
+If these variables occur inside the scope of a small function, it's generally not an issue - the memory will be freed as soon as the program exits that function - however it's still good practice to reduce unnecessary memory allocation operations.
+Third, you can make sure that the kind of variable you are using is appropriate.
+For some languages, variable type is dynamically assigned and the programmer has little real influence over this.
+For others, however, where the programmer has control over data types, it can be helpful to use the right type for the situation.
+As an example, if you need a variable to act as a counter, you would use an integer which uses 4 bytes in C++, not a double which uses 8 bytes, or a long double which uses 12.  
+These may seem like small, almost negligible differences, but at larger scales of data, these choices can pile up to real improvements.
+
+This is also true for things like file outputs.
+For example, let's say you have written a program that calculates the excitation wavelength of a molecule and gets out to 12 decimal places in nanometers.
+Do you actually have the significant figures correct?
+Is it even reasonable to go out to 12 decimal places when looking at the excitation wavelength of a molecule if most spectrometers can only give an experimental value out to $\pm1nm$?
+Consider these kinds of things when writing your code - file I/O takes additional computational time and storage capacity.
+
+\subsection*{Processor Optimization}
+\paragraph{} These kinds of optimizations are often more esoteric and are not considered as critical except in cases where certain types of calculations are being repeated hundreds of thousands of times.
+Consider an example where you are comparing a variable to the square root of another variable.
+This might look like this:
+
+\begin{minted}{python}
+    if (n < sqrt(m)):
+        print("the condition is true")
+\end{minted}
+
+The square root function is computationally expensive compared to the squaring function ($n^2$).
+This means, from a processor optimization standpoint, it would be cheaper to have the following:
+
+\begin{minted}{python}
+    if (n**2 < m):
+        print("the condition is true")
+\end{minted}
+
+This results in the same boolean expression (True or False), but the second example takes less computational power than the first.  
+If this is something happening hundreds of thousands of times in a program, such as when comparing distances between atoms, the difference can add up.  
+
+\subsection*{Parallel Processing}
+\paragraph{}Many processors have multiple cores, giving them the ability to run multiple calculations at once, allowing certain tasks to be completed MUCH faster when properly assigned.
+These cores are often accessed by MPI (Message Passing Interface) or OpenMP, both of which allow the programmer to assign specific tasks to individual cores on a processor and then collect the results back to a main core for subsequent work.
+
+Many tasks are "parallelizable" or even "embarassingly parallelizable", which means they can be broken up into multiple parts that can be completed independently and simultaneously without loss of accuracy in the end result.
+A simple example would be the summation of a hundred million numbers.
+If you were using a single core, you would have to add each number to the total in sequence.
+If each addition took a nanosecond, the summation of 100M numbers would take about 100 seconds.
+If, however, you were using twenty cores, and you divided the set of numbers up, each core would only have to handle 5 million numbers, and then the final 20 values would need to be added together at the end for the last value.  
+This means the process would take only 5 seconds instead of 100.  
+Imagine such a speedup across much longer and more complicated programs, or with greater numbers of available processing cores.
+
+Some tasks are considered to be "nonparallelizable", which usually means that each stage of a calculation is dependent on the result of a previous stage.  
+One example is the calculation of the position of a particle over time.
+If we are given a particle with an initial position, mass, velocity, and gravitational acceleration and told to calculate its position at each timestep, we cannot parallelise this because the position and velocity at $T_{n+1}$ are dependent on the position and velocity at time $T_{n}$.
+
+\subsection*{Algorithm Optimization}
+\paragraph{} There is a coding challenge that Google reveals to users once they've searched enough programming-related stuff over a long-enough period of time.
+This challenge has multiple levels, with increasing time limits for completion.
+Level 1 gives you 48 hours to complete, while Level 5 gives you 22 days.
+
+One particular level involves using a bitwise function, XOR, to "decrypt a password" (the whole challenge is in the context of rescuing bunnies from a mad scientist).
+However, using XOR directly will actually cause you to fail the challenge because one of the hidden tests is how much time the algorithm takes to complete.
+Upon researching more about XOR, I learned that there is a cyclic nature to the outputs of the command that repeats every 4 values.
+The result of the algorithm is therefore predictable, and the expected result can be obtained far more efficiently than actually running the algorithm.
+That is, rather than running the computationally expensive XOR command thousands and thousands of times to get the final result, we can simply divide the initial value by 4, take the remainder, and return a known value from that.
+
+The purpose of this specific challenge was not just to force the user to write a program to do a task, but also to make them understand the actual math behind the code and the subsequent effects on a larger dataset.
+
+Algorithm optimization is often one of the hardest and yet most rewarding forms of optimization, because it does not rely in any way on the code itself, but on the ability of the programmer to think through a problem and identify special characteristics of that problem.
+
