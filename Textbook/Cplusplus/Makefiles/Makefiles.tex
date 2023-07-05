@@ -1,0 +1,28 @@
+\section{Makefiles}
+Makefiles are a set of instructions for the compiler to use to build more complex programs from multiple files.  Previously, all of our programs have been single source code files containing everything needed.
+
+Effectively, each makefile is a list of object files that are created by compiling source code files, and include any dependencies.  This way, if you make a change to one file, only that file and any dependent files are recompiled and linked, rather than the entire program (which can take hours or even days to complete, depending on the size of the program in question).
+
+Each individual piece of the compilation process is written in a specific format, shown below.
+
+\begin{minted}{bash}
+## location of header files
+export INCLUDE_DIR=./headers/
+
+executable.x: executable.cpp subfile1.o subfile2.o
+    g++ executable.cpp subfile1.o subfile2.o -o executable.x -I ${INCLUDE_DIR}
+    
+subfile1.o: subfile1.cpp
+    g++ subfile1.cpp -o subfile1.o -I ${INCLUDE_DIR}
+    
+subfile2.o: subfile2.cpp
+    g++ subfile2.cpp -o subfile2.o -I ${INCLUDE_DIR}
+\end{minted}
+
+First, we establish any necessary environment variables for the compilation using the \texttt{export} command.  Then, each object to be created is listed with any dependencies.  In the example above, \texttt{executable.x} (the final executable file) is dependent on the file \texttt{executable.cpp} (the source code for that particular output) and the object files \texttt{subfile1.o} and \texttt{subfile2.o}.  When the makefile is run, the compiler checks to see if \texttt{executable.x} exists \textit{and is newer than } all of its dependencies.  What this means is that if any of the dependencies have been changed since the last time \texttt{executable.x} was compiled, it will be recompiled with the command on the line below, beginning with \texttt{g++}.
+
+The compile line for each object being created begins with the compiler itself, then lists any and all source files and objects to be linked, the uses the \texttt{-o} flag to indicate the name of the output object, and \texttt{-I} for any additional file locations it should include when compiling (such as the location of all header files in the project).
+
+If you're wondering what the \texttt{.o} files are, they're "object" files, and are effectively the intermediate steps between the raw source code of an entire project and the completed final compilation into a single executable file.  Objects are compiled \textit{portions} of the program, and when they're included in the compile command shown above, the process is called "linking".
+
+This allows us to connect multiple separate files together without having to fully recompile everything.  Each object file is listed in the Makefile in the same way as the example above, with only the filenames of dependencies and outputs being changed.

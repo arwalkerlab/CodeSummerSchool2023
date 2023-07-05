@@ -1,0 +1,193 @@
+\section{File I/O}
+
+As we discussed before in the Python section, one of the most important things we can do with our code is learn to read and write data in files, or process that data in a way that is useful to us.  The next several code blocks will illustrate some of the different ways file data can be read, processed, formatted, and written.
+Keep in mind that this is meant as an introduction to the concepts and not an exhaustive list of methods.
+
+It's important to remember that whenever you open any file in C++, you must close it at some point before the end of the program.  In python, there are instances where the closing of a file is automatic, so it's a little less strict.  In C++, that leniency is not there.  \textbf{Opened files must be closed.}
+
+\subsection{Reading Files}
+File I/O is largely controlled by the \texttt{fstream} library.  When opening a file for reading, we use the variable type \texttt{ifstream}, which is short for \textbf{i}nput-\textbf{f}ile-\textbf{stream}.  For files to be written, we use the variable type \texttt{ofstream}.
+
+\begin{minted}{c++}
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <cstring>
+using namespace std;
+
+int main()
+{
+  ifstream inFile;
+  string words;
+  
+  //Whenever you open a file...
+  inFile.open("TestData/input_file.txt",ios::in);
+  inFile >> words;
+  //You have to close it!
+  inFile.close();
+  cout << words;
+  
+  cout <<"\n\n Note that we only got one word of the file.\n\n";
+
+  return 0;
+}
+\end{minted}
+
+In the example above, we have opened the file "TestData/input\_file.txt" for reading and then used it as our input stream.  We then took one the first item in the stream and put it into the variable "words".  Then we closed the file because we were done with it.  And finally, we output the value of "words", which in our case was only the first word of the file.
+
+If we changed the line \texttt{inFile >> words;} to \texttt{inFile >> words >> words;}, we would get the \textbf{second} word in the file, because we assigned the first word to the variable "words", and then overwrote it with the second.  You can also parse lines such that different portions of the line go to different variables.  Take the following lines as an example:
+
+\begin{verbatim}
+    State   Frequency       Amplitude
+    0       100             3.2
+\end{verbatim}
+
+If we assume we've gotten through the file to the point that our input is sitting at the start of the second line, we could use the following code block to assign our different values.
+
+\begin{minted}{c++}
+...
+int state;
+double frequency, amplitude;
+inFile >> state >> frequency >> amplitude;
+...
+\end{minted}
+
+This would assign each of the values to their respective variables.  This is how many programs we use parse input files for molecular geometry, by simply reading in each line with an expected format.
+
+The next code block shows how we can get an entire line of the file at a time.  In many cases, it's easier to work with entire lines rather than trying to account for each individual word in the file.  If we take entire lines at a time, we can also do things like searching for specific patterns within them.
+
+\begin{minted}{c++}
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <cstring>
+using namespace std;
+
+int main()
+{
+  ifstream inFile;
+  string words;
+ 
+  cout <<"Let's try getline(): \n";
+  inFile.open("TestData/input_file.txt",ios::in);
+  getline(inFile,words);
+  inFile.close();
+  cout <<  words << endl;
+  return 0;
+}
+\end{minted}
+
+The \texttt{getline()} function takes everything in the first argument (the inFile stream) from its current position to the next linebreak character or the EOF (end-of-file) character, and then puts that content into the second argument, in this case our variable "words".
+
+Now let's try going through the entire file.  We can open the file like normal, then put our \texttt{getline()} function inside a \texttt{while} loop.  This is useful because the \texttt{getline()} function will continually iterate through all the lines in the file and return a \texttt{False} value when it gets to the end of the file.  Therefore, inside the loop we can work with each line individually.  In the example below, we're simply printing out each line to the terminal as we go.
+
+\begin{minted}{c++}
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <cstring>
+using namespace std;
+
+int main()
+{
+  ifstream inFile;
+  string words;
+  inFile.open("TestData/input_file.txt",ios::in);
+  while ( getline(inFile,words) )
+  {
+    cout << words << endl;
+  }
+  inFile.close();
+  return 0;
+}
+\end{minted}
+
+If you ran this program in the actual Code Summer School folder associated with this document, you'll have gotten the entire lyrics to "I Am the Very Model of a Modern Major-General" from Gilbert and Sullivan's \textit{Pirates of Penzance (1879)}.
+
+What if we wanted to modify lines that had a specific pattern in them?
+We can use the \texttt{find()} function available to the string class to seek a pattern inside the string.  We can also use some \texttt{if/else} statements to direct the code's flow.  In the code block below, we simply expanded the previous loop's internal functions to include the check for the word "General" in each line.  If the word is found in the current line, we run the \texttt{transform} function (found in the \texttt{algorithm} library included at the beginning) to convert the whole string to all-caps.
+
+So every time the program encounters "General" in a line, it will print that line in all caps rather than its original format.  And since the file has the lyrics to "I Am The Very Model of a Modern Major-General", we can assume it'll happen a lot.
+
+\begin{minted}{c++}
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+  ifstream inFile;
+  string words;
+  
+  inFile.open("TestData/input_file.txt",ios::in);
+
+  while ( getline(inFile,words) )
+  {
+    // Let's try some if-statements to see if a word is in the line...
+    if (words.find("General") != string::npos)
+    {
+      transform(words.begin(), words.end(), words.begin(), ::toupper);
+      cout << words << endl;
+    }
+    else
+    {
+      cout << words << endl;
+    }
+  }
+  inFile.close();
+  return 0;
+}
+\end{minted}
+
+\subsection{Writing Files}
+Writing files is similar to reading files in that you have to open and close the files appropriately.  Beyond that, however, writing to the file is much the same as outputting text to the terminal with \texttt{std::cout}.
+
+\begin{minted}{c++}
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+  ofstream outFile;
+  string words;
+  
+  outFile.open("TestData/output_file.txt",ios::out);
+  outFile << "This is just a bunch of text." << endl;
+  outFile << "This is a second line after the first 'endl'." << endl;
+  outFile.close();
+  return 0;
+}
+\end{minted}
+
+The above code block opens a file called "output\_file.txt", outputs two lines of text, then closes the file and exits the program.  This is fairly straightforward.
+
+However, what if you wanted to format the text in a specific and consistent way?  You can use \textit{manipulators} to achieve this.
+
+You can change the justification and fill character with the commands shown below.  Keep in mind that the fill character must be a single character.  You can also set how wide each portion of the output will be by changing the \texttt{setw()} value as necessary.
+
+\begin{minted}{c++}
+#include <iostream>
+#include <iomanip>
+int main()
+{
+    std::cout << "Left fill:\n" << std::left << std::setfill(' ')
+              << std::setw(12) << -1.23  << '\n';
+
+    std::cout << "Internal fill:\n" << std::internal
+              << std::setw(12) << -1.23  << '\n';
+
+    std::cout << "Right fill:\n" << std::right
+              << std::setw(12) << -1.23  << '\n';
+}
+\end{minted}
+
+\begin{homework}
+Try making your own smaller program to read in information from a file, find some specific pattern, and then output a differently-formatted version of the data to a new file.  You can use any of the outputs you have from your research calculations.
+\end{homework}

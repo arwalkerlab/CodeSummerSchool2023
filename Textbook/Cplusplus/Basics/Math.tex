@@ -1,0 +1,33 @@
+\section{Basic Math}
+Basic mathematical operators are available in C++.  An example is given below.  Notice that the variables are all declared on one line.  This is done because all of these different variables are doubles, and the compiler can interpret the single line to mean exactly that.
+
+\begin{minted}{c++}
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+int main()
+{
+  double var1, var2, sum, difference, product, dividend;
+
+  cout << "Let's do some math!\nEnter a number: ";
+  cin >> var1;
+  cout << "Enter another number: ";
+  cin >> var2;
+
+  // Assigning results of mathematical functions to new variables.
+  sum = var1+var2;
+  difference = var1-var2;
+  product = var1*var2;
+  dividend = var1/var2;
+
+  cout << "Addition: " << var1 << " + " << var2 << " = " << sum << endl;
+  cout << "Subtraction: " << var1 << " - " << var2 << " = " << difference << endl;
+  cout << "Multiplication: " << var1 << " * " << var2 << " = " << product << endl;
+  cout << "Division: " << var1 << " / " << var2 << " = " << dividend << endl;
+
+  return 0;
+}
+\end{minted}
+
+When run, this program will take any two values given and return the different basic mathematical operations between them - addition, subtraction, multiplication, and division.  Try writing your own mathematical algorithms!

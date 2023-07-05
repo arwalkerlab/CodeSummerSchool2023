@@ -1,0 +1,491 @@
+\section{Basic Functions}
+A function in programming is similar to a function in math - variables
+go in, operations occur, results come out. In fact, I passed all my
+higher level math classes by learning to reinterpret
+complex mathematical equations as programming functions. For example, if
+you wanted to obtain the sum of all integers between 0 and 1000, you
+would do the following:
+
+\textbf{Math}
+
+\(\sum\limits_{x=0}^{1000}x\)
+
+\textbf{Python}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{total }\OperatorTok{=} \DecValTok{0}
+\ControlFlowTok{for}\NormalTok{ x }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1001}\NormalTok{):}
+\NormalTok{    total }\OperatorTok{+=}\NormalTok{ x}
+\BuiltInTok{print}\NormalTok{(total)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{C++}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DataTypeTok{int}\NormalTok{ total }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}
+\ControlFlowTok{for}\OperatorTok{(}\DataTypeTok{int}\NormalTok{ x}\OperatorTok{=}\DecValTok{0}\OperatorTok{;}\NormalTok{x}\OperatorTok{\textless{}=}\DecValTok{1000}\OperatorTok{;}\NormalTok{x}\OperatorTok{++)}
+\OperatorTok{\{}
+\NormalTok{    total }\OperatorTok{+=}\NormalTok{ x}\OperatorTok{;}
+\OperatorTok{\}}
+\NormalTok{cout }\OperatorTok{\textless{}\textless{}}\NormalTok{ total }\OperatorTok{\textless{}\textless{}}\NormalTok{ endl}\OperatorTok{;}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+The functions above produce the same value. They are simply different
+representations of the same algorithm.
+
+\emph{What do you notice that's different between these two programming
+languages?}
+
+If you find there's a task or set of instructions that you do multiple
+times in a program/script, you might find it useful to convert it into a
+function.
+
+Functions have the benefit of ensuring that the calculations are being
+performed consistently - you only have to get the code right once!
+
+However, it's also important to consider if something is \textbf{worth}
+turning into a function. Whenever you think about building a function,
+the first thing to do is see if it already exists. This is a fundamental
+rule for programming and science - don't reinvent the wheel unless you
+can make it a lot better.
+
+\hypertarget{python-functions}{%
+\subsubsection{Python Functions}\label{python-functions}}
+
+For today, we'll focus on python functions.
+
+    \emph{A function to return the remainder of one number divided by
+another. That might look somethink like this:}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{def}\NormalTok{ get\_remainder(number,divisor):}
+    \ControlFlowTok{if}\NormalTok{ number }\OperatorTok{\textgreater{}}\NormalTok{ divisor:}
+        \ControlFlowTok{return}\NormalTok{ get\_remainder(number}\OperatorTok{{-}}\NormalTok{divisor,divisor)}
+    \ControlFlowTok{else}\NormalTok{:}
+        \ControlFlowTok{return}\NormalTok{ number}
+\end{Highlighting}
+\end{Shaded}
+
+Experienced programmers will look at the function above and consider
+hunting me down. Rightfully so, for multiple reasons. First and most
+importantly, the function is unnecessary. There already exists a
+function to get the remainder of a number and a divisor, called
+``modulo'', and is called using \texttt{\%} like so:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{l+m+mi}{23}\PY{o}{\PYZpc{}}\PY{k}{5}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+3
+\end{Verbatim}
+\end{tcolorbox}
+        
+    That is so much easier than writing the function above. However, that's
+not the only reason the function above will drive programmers nuts:
+\textbf{\href{https://www.google.com/search?biw=924\&bih=939\&sxsrf=ALiCzsYF5yDBRHIPvQK0WvoahmOQWNTLaw:1652715574983\&q=recursion\&spell=1\&sa=X\&ved=2ahUKEwjhw4umreT3AhVBCjQIHQeACCYQBSgAegQIAhAy}{Recursion}}
+
+Recursive functions are any function that calls itself during its
+execution. While there are some situations where recursion may be
+necessary, There is nearly always a cleaner solution.
+
+The problems with recursion lie in the fact that such a function can
+call itself infinitely if not well-written, and can become
+computationally expensive and slow. So if you ever find yourself writing
+a function that calls itself, get another opinion from someone else.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+Okay, let's start at the basics of writing a function in Python
+
+Every function must be \emph{defined} before it can be \emph{called}
+(used). In Python, a function definition begins with the command
+\texttt{def}, followed by the name of the function and then any function
+\emph{arguments} it will need. \emph{Arguments} are named variables that
+will be used inside the function. This means that any needed variables
+that aren't given to the function as an argument must be created inside
+the function. After the arguments, you need a \texttt{:} to indicate
+that the following code is what should be executed whenever the function
+is called. It's also good practice to include the \texttt{return}
+command at the end of the function, even if nothing is sent back to
+where the function was called.
+
+An example is below.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{myfunction}\PY{p}{(}\PY{n}{argument1}\PY{p}{,}\PY{n}{argument2}\PY{p}{,}\PY{n}{argument3}\PY{p}{)}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{argument1}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{argument2}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{argument3}\PY{p}{)}
+    \PY{k}{return}
+\end{Verbatim}
+\end{tcolorbox}
+
+    This is a fairly simple function, and now that we've defined it, we can
+call it as much as we want.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{myfunction}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{potato}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{nebula}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{agreeable}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+potato
+nebula
+agreeable
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{myfunction}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mf}{78.951}\PY{p}{,}\PY{l+m+mi}{9001}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+4
+78.951
+9001
+    \end{Verbatim}
+
+    Note that the two different calls above pass different types of data to
+the function, but the function is able to handle them all. Let's try a
+different function that does some math on the variables we pass it.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{mymathfunction}\PY{p}{(}\PY{n}{arg1}\PY{p}{,}\PY{n}{arg2}\PY{p}{,}\PY{n}{arg3}\PY{p}{)}\PY{p}{:}
+    \PY{n}{result} \PY{o}{=} \PY{n}{arg1} \PY{o}{+} \PY{n}{arg2} \PY{o}{\PYZhy{}} \PY{n}{arg3}
+    \PY{k}{return} \PY{n}{result}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Now, looking at the function above, we expect it to use numbers as
+arguments.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{answer} \PY{o}{=} \PY{n}{mymathfunction}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{answer}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+12
+    \end{Verbatim}
+
+    What if we passed data that wasn't a number?
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{answer} \PY{o}{=} \PY{n}{mymathfunction}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cactus}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{answer}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}, frame=single, framerule=2mm, rulecolor=\color{outerrorbackground}]
+\textcolor{ansi-red}{---------------------------------------------------------------------------}
+\textcolor{ansi-red}{TypeError}                                 Traceback (most recent call last)
+Input \textcolor{ansi-green}{In [7]}, in \textcolor{ansi-cyan}{<cell line: 1>}\textcolor{ansi-blue}{()}
+\textcolor{ansi-green}{----> 1} answer \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{mymathfunction\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{(\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{5\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{10\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{"\strut}}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{cactus\strut}}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{"\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{)\strut}
+\textcolor{ansi-green-intense}{\textbf{      2}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{print}(answer)
+
+Input \textcolor{ansi-green}{In [5]}, in \textcolor{ansi-cyan}{mymathfunction}\textcolor{ansi-blue}{(arg1, arg2, arg3)}
+\textcolor{ansi-green-intense}{\textbf{      1}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{def}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,0,255}}{mymathfunction}(arg1,arg2,arg3):
+\textcolor{ansi-green}{----> 2}     result \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{arg1\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{ \strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{+\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{ \strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{arg2\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{ \strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{-\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{ \strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{arg3\strut}
+\textcolor{ansi-green-intense}{\textbf{      3}}     \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{return}} result
+
+\textcolor{ansi-red}{TypeError}: unsupported operand type(s) for -: 'int' and 'str'
+    \end{Verbatim}
+
+    Now we get a type error. Fortunately, we can rewrite the function to
+include ``type hints''. If we add \texttt{:float} after the variable
+names in the function definition, we're telling the programmer ``This
+variable should be of the \texttt{float} data type''. Please note that
+it doesn't actually stop the user from passing incorrect data types to
+the function.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{mymathfunction}\PY{p}{(}\PY{n}{arg1}\PY{p}{:}\PY{n+nb}{float}\PY{p}{,} \PY{n}{arg2}\PY{p}{:}\PY{n+nb}{float}\PY{p}{,} \PY{n}{arg3}\PY{p}{:}\PY{n+nb}{float}\PY{p}{)}\PY{p}{:}
+    \PY{n}{result} \PY{o}{=} \PY{n}{arg1} \PY{o}{+} \PY{n}{arg2} \PY{o}{\PYZhy{}} \PY{n}{arg3}
+    \PY{k}{return} \PY{n}{result}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{answer} \PY{o}{=} \PY{n}{mymathfunction}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cactus}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{answer}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}, frame=single, framerule=2mm, rulecolor=\color{outerrorbackground}]
+\textcolor{ansi-red}{---------------------------------------------------------------------------}
+\textcolor{ansi-red}{TypeError}                                 Traceback (most recent call last)
+Input \textcolor{ansi-green}{In [9]}, in \textcolor{ansi-cyan}{<cell line: 1>}\textcolor{ansi-blue}{()}
+\textcolor{ansi-green}{----> 1} answer \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{mymathfunction\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{(\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{5\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{10\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{"\strut}}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{cactus\strut}}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{"\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{)\strut}
+\textcolor{ansi-green-intense}{\textbf{      2}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{print}(answer)
+
+Input \textcolor{ansi-green}{In [8]}, in \textcolor{ansi-cyan}{mymathfunction}\textcolor{ansi-blue}{(arg1, arg2, arg3)}
+\textcolor{ansi-green-intense}{\textbf{      1}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{def}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,0,255}}{mymathfunction}(arg1:\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{float}, arg2:\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{float}, arg3:\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{float}):
+\textcolor{ansi-green}{----> 2}     result \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{arg1\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{ \strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{+\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{ \strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{arg2\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{ \strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{-\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{ \strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{arg3\strut}
+\textcolor{ansi-green-intense}{\textbf{      3}}     \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{return}} result
+
+\textcolor{ansi-red}{TypeError}: unsupported operand type(s) for -: 'int' and 'str'
+    \end{Verbatim}
+
+    Recall the booleans we discussed yesterday. We can use them along with a
+\emph{type check} in our function to first make sure the arguments to
+our function are of the correct type.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} declare a variable as an integer.}
+\PY{n}{x} \PY{o}{=} \PY{l+m+mi}{5}
+
+\PY{c+c1}{\PYZsh{} check if it\PYZsq{}s an integer.}
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n+nb}{int}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} check if it\PYZsq{}s a float.}
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n+nb}{float}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+True
+False
+    \end{Verbatim}
+
+    We can see how the \texttt{isinstance} function (which doesn't need to
+be defined because it's already part of the base python) takes the
+variable we give it and a type, and returns a boolean response. Note
+that the \texttt{int} and \texttt{float} checks return different
+results. However, as programmers we know that python math with integers
+and floats is (generally) interchangable.
+
+How can we use this to guard our functions?
+
+In the example below, we will create an empty list for the type checks,
+then add the result of each check to the list. Then, if the whole list
+is \texttt{True}, we will proceed with the function. If it's not all
+\texttt{True}, we'll exit the function without doing anything.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{mymathfunction}\PY{p}{(}\PY{n}{arg1}\PY{p}{:}\PY{n+nb}{float}\PY{p}{,} \PY{n}{arg2}\PY{p}{:}\PY{n+nb}{float}\PY{p}{,} \PY{n}{arg3}\PY{p}{:}\PY{n+nb}{float}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} make an empty list}
+    \PY{n}{variable\PYZus{}type\PYZus{}checks} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{c+c1}{\PYZsh{} check if arg1 is a float or an integer and add the result to the list}
+    \PY{n}{variable\PYZus{}type\PYZus{}checks}\PY{o}{.}\PY{n}{append}\PY{p}{(} \PY{n+nb}{any}\PY{p}{(} \PY{p}{[}\PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{arg1}\PY{p}{,}\PY{n+nb}{float}\PY{p}{)}\PY{p}{,} \PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{arg1}\PY{p}{,}\PY{n+nb}{int}\PY{p}{)}\PY{p}{]} \PY{p}{)} \PY{p}{)}
+    \PY{c+c1}{\PYZsh{} check if arg2 is a float or an integer and add the result to the list}
+    \PY{n}{variable\PYZus{}type\PYZus{}checks}\PY{o}{.}\PY{n}{append}\PY{p}{(} \PY{n+nb}{any}\PY{p}{(} \PY{p}{[}\PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{arg2}\PY{p}{,}\PY{n+nb}{float}\PY{p}{)}\PY{p}{,} \PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{arg2}\PY{p}{,}\PY{n+nb}{int}\PY{p}{)}\PY{p}{]} \PY{p}{)} \PY{p}{)}
+    \PY{c+c1}{\PYZsh{} check if arg3 is a float or an integer and add the result to the list}
+    \PY{n}{variable\PYZus{}type\PYZus{}checks}\PY{o}{.}\PY{n}{append}\PY{p}{(} \PY{n+nb}{any}\PY{p}{(} \PY{p}{[}\PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{arg3}\PY{p}{,}\PY{n+nb}{float}\PY{p}{)}\PY{p}{,} \PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{arg3}\PY{p}{,}\PY{n+nb}{int}\PY{p}{)}\PY{p}{]} \PY{p}{)} \PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} check if the entire list is \PYZdq{}True\PYZdq{}}
+    \PY{k}{if} \PY{n+nb}{all}\PY{p}{(}\PY{n}{variable\PYZus{}type\PYZus{}checks}\PY{p}{)}\PY{p}{:}
+        \PY{n}{result} \PY{o}{=} \PY{n}{arg1} \PY{o}{+} \PY{n}{arg2} \PY{o}{\PYZhy{}} \PY{n}{arg3}
+        \PY{k}{return} \PY{n}{result}
+    \PY{c+c1}{\PYZsh{} if the above fails (the if\PYZhy{}condition is not met), we\PYZsq{}ll do the next section instead.}
+    \PY{k}{elif} \PY{n+nb}{any}\PY{p}{(}\PY{n}{variable\PYZus{}type\PYZus{}checks}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Some arguments are not floats.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{k}{return} \PY{k+kc}{None}
+    \PY{c+c1}{\PYZsh{} if nothing above worked, do this.}
+    \PY{k}{else}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Every argument is not a float!}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{k}{return} \PY{k+kc}{None}
+\end{Verbatim}
+\end{tcolorbox}
+
+    This function is a bit larger, but it's including additional checks and
+conditions to ensure it works correctly.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{answer} \PY{o}{=} \PY{n}{mymathfunction}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{answer}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+12
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{answer} \PY{o}{=} \PY{n}{mymathfunction}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cactus}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{answer}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Some arguments are not floats.
+None
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{answer} \PY{o}{=} \PY{n}{mymathfunction}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cheese}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{crater}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cactus}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{answer}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Every argument is not a float!
+None
+    \end{Verbatim}
+
+    We have the three possible outcomes for this function above. In all
+cases, the function executed without throwing an error (which can cause
+the program to crash entirely), and each returned a result.
+
+The two ``failing'' function calls returned the \texttt{None} datatype.
+In C++, this is called \texttt{NULL}. Both effectively mean there's an
+empty spot. However, we can still treat \texttt{None} like a data type.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{answer} \PY{o}{=} \PY{n}{mymathfunction}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cheese}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{crater}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cactus}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{answer} \PY{o}{==} \PY{k+kc}{None}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Every argument is not a float!
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+True
+\end{Verbatim}
+\end{tcolorbox}
+        
+    We can use the \texttt{None} comparison to check results, which can be
+useful in larger functions or programs.
+
+What if there are external values that you need to change inside the
+function? By default, when you pass arguments to functions in Python,
+you're not passing the variable itself, but a copy of the value inside.
+Consider the function below.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{:}
+    \PY{n}{x} \PY{o}{=} \PY{n}{x}\PY{o}{+}\PY{l+m+mi}{10}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} set x to a value}
+\PY{n}{x} \PY{o}{=} \PY{l+m+mi}{5}
+\PY{c+c1}{\PYZsh{} print the value of x}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} call the function f(x), which internally changes the value of x and then prints it}
+\PY{n}{f}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} print the value of x}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+5
+15
+5
+    \end{Verbatim}
+
+    Now, here we can see that the value of \texttt{x} \emph{outside} the
+function \texttt{f(x)} never changes, even though it's changed inside.
+This is an example of \emph{scope} that we discussed yesterday. What if
+we wanted to change the value of \texttt{x} with the function?
+
+We can use \texttt{global} to pull variables in from the outside and
+use/modify them. This is particularly useful when you're wanting to
+change a large dataset, like a list of xyz-coordinates for a bunch of
+particles (as a completely innocent and totally-not-foreshadowing
+example).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{k}{global} \PY{n}{y}
+    \PY{n}{y} \PY{o}{=} \PY{n}{y}\PY{o}{+}\PY{l+m+mi}{10}
+
+\PY{n}{y}\PY{o}{=}\PY{l+m+mi}{7}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{y}\PY{p}{)}
+\PY{n}{f}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{y}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+7
+17
+    \end{Verbatim}
+
+    Now we see how the function \texttt{f()} without any arguments was able
+to modify the value of \texttt{y} outside itself.
+
+Now that you know about \texttt{global}, be aware that it can be very
+dangerous if used improperly.
+\begin{center}
+\includegraphics[width=0.99\textwidth]{Images/DeathSword.png}
+\end{center}
+In Python, functions can pull external things inside with
+\texttt{global}, but nothing can be pulled from inside a function except
+things the function \emph{returns}.
+
+You can also nest function calls inside other functions, which can be
+useful as well.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return} \PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2} \PY{o}{+} \PY{l+m+mi}{7}
+
+\PY{k}{def} \PY{n+nf}{g}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return} \PY{n}{x}\PY{o}{*}\PY{n}{f}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{g}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{g}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+-48
+92
+    \end{Verbatim}
+
+    That's a very simple example, but you can see how having smaller
+functions can lend itself to a modularity and reusability that can
+become very convenient.

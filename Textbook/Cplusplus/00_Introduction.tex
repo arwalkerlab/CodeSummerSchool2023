@@ -1,0 +1,54 @@
+\chapter{Day 6 - Introduction to C++}
+\begin{Goals}
+\begin{enumerate}
+    \item Compile a basic C++ program
+    \item Identify sections of source code
+    \item Manage input and output in your code
+    \item Handle variables, including initialization, assignment, modification, and recall.
+    \item Read from and write to files, including parsing/processing inputs and formatting outputs.
+\end{enumerate}
+\end{Goals}
+\paragraph{}C++ is a compiled language, which means that before a program written with it can be executed, it must be compiled from human-readable text into the binary machine language.
+
+By convention, C++ source code files (the text you can read and edit) end with \texttt{.cpp}, compiled object files end in \texttt{.o}, and completed executables end in \texttt{.x}.
+
+The basic compilation command we will be using is below:
+
+\begin{verbatim}
+    g++ main.cpp -o output.x
+\end{verbatim}
+
+This calls the compiler \texttt{g++} on the source file \texttt{main.cpp}, with the resulting output (\texttt{-o}) as \texttt{output.x}.  The program can then be executed like any other command-line program by calling it with \texttt{./output.x}.
+
+To start, every C++ program will have the following basic structure:
+
+\begin{minted}{c++}
+#include <iostream>
+#include <cstdlib>
+int main()
+// single-line comment
+{
+    std::cout << "Hello World!" << std::endl;
+    return 0;
+}
+/* This is a multi-
+line comment between the start and end asterisk-slashes
+*/
+\end{minted}
+
+Let's break this down into some major pieces.  The first section is where libraries and other required files are included.  In this example, we're including the \texttt{iostream} library, which manages the input/output streams of C++, and \texttt{cstdlib}, the C Standard Library which contains a wide array of commonly used functions.  As we progress, we will encounter more libraries with their own unique usefulness.
+\begin{minted}{c++}
+#include <iostream>
+#include <cstdlib>
+\end{minted}
+
+The next section is where the main program loop is written.  It must be called "main" for C++ compilers to understand where the starting point of the program is when it's run.  The datatype \texttt{int} is used by convention to allow for integer-based exit codes to be returned to the operating system.  This is useful for error reporting - if the program fails in a way the programmer has anticipated, it can return a specific integer value to the operating system to alert it to the failure.
+
+The \textbf{scope} of the \texttt{main()} function is defined by the open- and close- curly braces.  Throughout C++, this will be how scope is defined and maintained.  Inside the scope is where all the program's functions and commands are stored.  At the end of any program or function (with a specific exception we will get into later), there \textbf{must be a \texttt{return} command}.  Also note that at the end of every command line, there is a semicolon.
+\begin{minted}{c++}
+int main()
+{
+    std::cout << "Hello World!" << std::endl;
+    return 0;
+}
+\end{minted}

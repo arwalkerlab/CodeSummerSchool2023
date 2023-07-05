@@ -1,0 +1,84 @@
+\section{Variables and Math}
+The code block below introduces \texttt{int} and \texttt{double} variable types.  Integers are whole numbers and doubles are floating-point numbers, or decimals, or simply floats.
+In C++, variables must be \textbf{declared} before they can be assigned a value, retrieved, or modified.
+
+\begin{minted}{c++}
+#include <iostream>
+#include <cstdlib>
+int main()
+{
+  int my_integer;
+  double my_double;
+
+  my_integer = 10;
+  my_double = 10.3;
+  // Note how there is no decimal at the end of my_integer.
+
+  std::cout << "my_integer is :" << my_integer << std::endl;
+  std::cout << "my_double  is :" << my_double << std::endl;
+  
+  std::cout << "\n\nLet's do some integer division!\n\n";
+  std::cout << "10 / 3 = " << 10/3 << std::endl;
+  std::cout << "28 / 5 = " << 28/5 << std::endl;
+  
+  std::cout << "\n\nNow let's do some double division!" << std::endl;
+  std::cout << "10. / 3. = " << 10./3. << std::endl;
+  std::cout << "28. / 5. = " << 28./5. << std::endl;
+  // Note that even though 10 and 3 are integers, we've included the decimal.  
+  // This forces C++ to treat them as doubles instead of integers.
+  
+  std::cout << "\n\nNow let's do some mixed division!" << std::endl;
+  std::cout << "10. / 3 = " << 10./3 << std::endl;
+  std::cout << "28 / 5. = " << 28/5. << std::endl;
+  // When we run this program, notice the outputs.  Both should be doubles because 
+  // C++ gives importance to doubles over ints.
+  return 0;
+}
+\end{minted}
+Notice the way each of the different sections are written.  The numerical values are the same in each, with \texttt{10} and \texttt{10.} being equivalent.  However, C++ code treats the former as an integer and the latter as a float.  If you run the program above, you will see the different outputs for what we know to be mathematically identical operations.
+
+It is important to keep these things in mind when working with numerical values in C++.
+
+\subsection{Constants}
+It is sometimes useful for us to have values stored as variables that we can adjust once rather than trying to find every instance of them in our code if we need to change them.  For example, we might need to use $\pi$ in a program, but may only need a few decimal places.  Later on, we might find that we need more than a few decimals, and it would be easiest for us if we just had to change one value.  It's also safer because we reduce the risk of introducing an error through a typo in the number if we only have to enter it once.
+
+This is where the use of a \texttt{const} comes in handy.  We add \texttt{const} before a variable type to indicate that the variable is not allowed to be changed during the execution of the program.  In the example with $\pi$, it would look something like this.
+
+\begin{minted}{c++}
+const double PI=3.1415;
+\end{minted}
+
+In general, constants are declared outside of the scope of functions so that they can be used everywhere.
+
+\subsection{Strings}
+Strings are also known as arrays of characters, or chars.  Both options can be used in C++, however it is important to know the differences in how they can be used.
+Strings in C++ have some built-in functions that can be used to find patterns and substrings, modify strings, and slice them.  The code below illustrates the two different variable declarations.  Note that the \texttt{char*} variable is also defined in the same line.
+
+Also, you will notice the line \texttt{using namespace std;} in the code block below.  Previous code blocks have had \texttt{std::} at the start of many of the commands. This line is being added to make it easier to use the functions contained within it. It's similar to python's \texttt{from library import *}, in that it removes the requirement to include \texttt{std::} at the start of many of the library-dependent variable types and functions.  As a result, you will see things like \texttt{cout} instead of \texttt{std::cout}.  This is one of the benefits of using \textbf{namespaces}, and it can be helpful later on down the line as you develop your own code.
+
+\begin{minted}{c++}
+#include <iostream>
+#include <cstdlib>
+#include <cstring>
+
+using namespace std;
+
+int main()
+{
+  char* my_charstring = "Texas has the best barbecue!";
+  string my_string;
+  my_string = "Detroit has the best Cheesy Fries!";
+
+  cout << "Now to see how that string is doing.  It was called 'my_string'...\n";
+  cout << my_string << endl;
+
+  cout << "And the char* list...  It was called 'my_charstring'...\n";
+  cout << my_charstring << endl;
+
+  return 0;
+}
+\end{minted}
+
+You may also have noticed the use of \texttt{endl} rather than the newline character \texttt{"\\n"}.  These both produce a line break.  The only difference between them is that \texttt{endl} does something called "flushing the buffer", which means that the data stored in the output buffer is forced out into the main output.
+
+For most text-based things, this may not seem important.  But if you're writing things to a file in a loop, you might want to ensure that everything is written to the file as it's generated, rather than all at once at the end of the loop.  Using \texttt{endl} is the preferred option in this scenario, and it's ultimately easier.

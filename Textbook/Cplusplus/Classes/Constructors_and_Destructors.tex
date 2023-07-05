@@ -1,0 +1,23 @@
+\section{Constructors and Destructors}
+Whenever a class is instantiated, the constructor is used.  This is analogous to python's \texttt{\_\_init\_\_()} function, in that it is a set of commands that are run the moment the class object is created.  Conversely, a destructor is a set of commands that are executed whenever the object is destroyed.  This includes any event where the memory is released, whether from a specific command inside the code, or when the program itself finishes execution and exits.
+
+By convention, constructors and destructors are named the same as their class, with the special addition of the \texttt{~} before the destructor's name.  See the example below.
+
+\begin{minted}{c++}
+class Square
+{
+  private:
+    double edge;
+  public:
+    Square(double); // constructor
+    ~Square();      // destructor
+};
+Square::Square(double length)
+{
+    edge = length;
+}
+Square::~Square()
+{
+    std::cout << "Goodbye, Square!" << endl;
+}
+\end{minted}

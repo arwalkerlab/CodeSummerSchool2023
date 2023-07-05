@@ -1,0 +1,31 @@
+\section{Function Types}
+The most important thing to remember about functions in C++ is that every function must have a \textbf{return type}.  These are data types like \texttt{int},\texttt{double}, and \texttt{void}, and correspond to the type of return each function is expected to send back to wherever it was called from.  Every function must have a return, with \texttt{void} functions being the only exception.  Look at some example functions below (these are not complete programs, just the function code).
+
+\begin{minted}{c++}
+int add_integers(int var1, int var2)
+{ 
+    int answer;
+    answer = var1 + var2;
+    return answer;
+}
+double multiply_doubles(double var1, double var2)
+{ 
+    double answer;
+    answer = var1 * var2;
+    return answer;
+}
+\end{minted}
+
+The first function, \texttt{add\_integers} is defined with the \texttt{int} return type.  Note that inside the scope, the variable being returned (\texttt{answer}) is also of the \texttt{int} type.  This is important to remember, as trying to return one variable type from a function that is defined with another will cause a compiler error and your program won't run.  The same is true for the second function, \texttt{multiply\_doubles}.  Also note that each function takes arguments of the same name, but with different types.  As we've discussed before, in C++ it is important to keep track of the variable types you're working with.  This is also one of the reasons that functions are so useful - once the internal code of the function is correct, you don't have to worry so much about the internal variable types.  Any variable type that you have access to (including variable types you create in your code) can be used as function types.
+
+\subsection{Void Functions}
+\texttt{Void} functions are generally used for functions that will manipulate or modify variables directly, or will interact with external files, but don't need to send anything back to the original point of where it was called.  Aside from that distinction, however, \texttt{void} functions can be treated very much like any other function.
+
+\begin{minted}{c++}
+void print_string(string my_string_var)
+{
+    cout << my_string_var << endl;
+}
+\end{minted}
+
+Note that in the above code block, there is no return command in the function.  The function takes the arguments given, performs a set of instructions with the arguments, and since there is nothing that needs to be sent back from the function, the \texttt{void} function type is the correct choice.

@@ -1,0 +1,113 @@
+\section{Inheritance}
+Inheritance refers to building a class that is based on a framework of
+another class. This can be done when you have need of classes for
+different subcategories of object that all fall under the same larger
+category. This can be thought of in terms of different people having
+different jobs. You can have a class, \texttt{Person} that has all the
+usual information about a person such as name and age, and then have a
+class called \texttt{Employee} which inherits from \texttt{Person}. All
+\texttt{Employee}s are also a \texttt{Person}, but all \texttt{Person}s
+are not \texttt{Employee}s.
+
+Let's look at it from a scientific perspective.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+
+\PY{k}{class} \PY{n+nc}{Point}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x} \PY{o}{=} \PY{n}{x}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{y} \PY{o}{=} \PY{n}{y}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{z} \PY{o}{=} \PY{n}{z}
+    \PY{k}{def} \PY{n+nf}{distance\PYZus{}from}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{point}\PY{p}{)}\PY{p}{:}
+        \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(} \PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x}\PY{o}{\PYZhy{}}\PY{n}{point}\PY{o}{.}\PY{n}{x}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2} \PY{o}{+} \PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{y}\PY{o}{\PYZhy{}}\PY{n}{point}\PY{o}{.}\PY{n}{y}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2} \PY{o}{+} \PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{z}\PY{o}{\PYZhy{}}\PY{n}{point}\PY{o}{.}\PY{n}{z}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2} \PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{} Now we have a class that defines a point in cartesian space (x,y,z) and has a function that can be used to calculate the distance from another point.}
+\PY{c+c1}{\PYZsh{}\PYZsh{} What if we wanted a point\PYZhy{}charge class but didn\PYZsq{}t want to have to rewrite the entire class function for it?}
+\PY{k}{class} \PY{n+nc}{PointCharge}\PY{p}{(}\PY{n}{Point}\PY{p}{)}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{,}\PY{n}{charge}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{charge} \PY{o}{=} \PY{n}{charge}
+    \PY{k}{def} \PY{n+nf}{force\PYZus{}between}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{pointcharge}\PY{p}{)}\PY{p}{:}
+        \PY{n}{dist} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{distance\PYZus{}from}\PY{p}{(}\PY{n}{pointcharge}\PY{p}{)}
+        \PY{n}{k} \PY{o}{=} \PY{l+m+mf}{8.988e9}
+        \PY{n}{force} \PY{o}{=} \PY{n}{k} \PY{o}{*} \PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{charge} \PY{o}{*} \PY{n}{pointcharge}\PY{o}{.}\PY{n}{charge}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{n}{dist}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+        \PY{k}{return} \PY{n}{force}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{} With the PointCharge class, we included the type of class it\PYZsq{}s inheriting from, Point.  }
+\PY{c+c1}{\PYZsh{}\PYZsh{} PointCharge now has all the same variables and functions as Point, without having to redefine them.}
+
+\PY{n}{p1} \PY{o}{=} \PY{n}{Point}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{pc1} \PY{o}{=} \PY{n}{PointCharge}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{pc2} \PY{o}{=} \PY{n}{PointCharge}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{pc2}\PY{o}{.}\PY{n}{force\PYZus{}between}\PY{p}{(}\PY{n}{pc1}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+-642000000.0
+    \end{Verbatim}
+
+    Take note of how the first function of the \texttt{PointCharge} class,
+\texttt{\_\_init\_\_()} is written. The first command is
+\texttt{super().\_\_init\_\_()}, which refers to the inherited class'
+initialization function. Effectively, it says ``do all the stuff the
+previous class normally does first, then do these additional steps''.
+
+We can take inheritance further. Any class can be inherited, and
+everything in that class comes with it, including its own inheritances.
+
+Consider an atom. We can (roughly!) describe an atom as a point charge
+that also has mass. Of course they're more complicated than that, but
+we're taking it a step at a time.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{class} \PY{n+nc}{Atom}\PY{p}{(}\PY{n}{PointCharge}\PY{p}{)}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{,}\PY{n}{charge}\PY{p}{,}\PY{n}{mass}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{,}\PY{n}{charge}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{mass} \PY{o}{=} \PY{n}{mass}
+
+    \PY{k}{def} \PY{n+nf}{get\PYZus{}accel\PYZus{}between}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{atom}\PY{p}{)}\PY{p}{:}
+        \PY{n}{force} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{force\PYZus{}between}\PY{p}{(}\PY{n}{atom}\PY{p}{)}
+        \PY{n}{accel} \PY{o}{=} \PY{n}{force}\PY{o}{/}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{mass}
+        \PY{k}{return} \PY{n}{accel}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Now we have a class that holds all the previous stages' parameters and
+has access to all the previous stages' functions. With this, we can
+build larger and larger systems and include more and more data, without
+having to completely rebuild each class from the ground up.
+
+You may notice that each of the classes we built end up requiring more
+and more variables at their creation. But what if you wanted to have
+some classes that have standard values? Let's say we wanted to make an
+Iron(II) atom? Every iron(II) atom can be represented with the same mass
+(we're skipping isotopic effects for now and going with periodic table
+values) and same charge.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{class} \PY{n+nc}{Iron}\PY{p}{(}\PY{n}{Atom}\PY{p}{)}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mf}{55.845}\PY{p}{)}
+
+\PY{n}{iron\PYZus{}atom} \PY{o}{=} \PY{n}{Iron}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Now we can create inherited classes that are somewhat more specific and
+also faster to initialize. In the above case, if you know an atom is
+going to be an Iron(II), you don't have to give the call anything for
+\texttt{mass} or \texttt{charge}, because those values are already
+known.
+
+Try making some other classes for anything you want. You can also mix in
+things from previous lessons like decorators to make your classes unique
+and highly customized.

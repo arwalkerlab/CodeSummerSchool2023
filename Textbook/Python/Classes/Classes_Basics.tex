@@ -1,0 +1,253 @@
+
+Classes are one of the most powerful, versatile, and useful tools in
+modern programming. A \emph{class} is a construct that can hold internal
+data and has its own internal functions that can be called. Classes can
+also use external functions, other classes, and can range from the
+extremely simple to the incredibly complex.
+
+Classes are defined in specific way, with some required functions built
+into all of them.
+
+\section{Basic Classes}
+
+Check out the example class below. Note the two functions that are
+already included. Of these two, \texttt{\_\_init\_\_} is
+\textbf{required} for any and all classes, otherwise the class won't
+actually be initialized when called, and the data you're trying to hold
+won't be kept.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{class} \PY{n+nc}{MyClass}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{name}\PY{p}{,}\PY{n}{age}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{name} \PY{o}{=} \PY{n}{name}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{age}  \PY{o}{=} \PY{n}{age}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}str\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{name}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ is }\PY{l+s+si}{\PYZob{}}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{age}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ years old.}\PY{l+s+s2}{\PYZdq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \texttt{MyClass} is an example of a very basic class structure.
+
+\begin{itemize}
+\tightlist
+\item
+  The references to \texttt{self} are important. It is necessary when
+  referencing variables held by the class, especially in internal
+  functions. You may notice that the \texttt{\_\_str\_\_} function
+  doesn't take any arguments except for \texttt{self}, yet it is able to
+  use the \texttt{age} and \texttt{name} variables we stored during the
+  \texttt{\_\_init\_\_} function call.
+\item
+  The first class function defined is \texttt{\_\_init\_\_}, which is
+  understood by Python to be the \emph{constructor}. This function is
+  called the very first time a new instance of \texttt{MyClass} is
+  created.
+\item
+  The next class function is \texttt{\_\_str\_\_}, which we can use to
+  define what is displayed if the user calls the class object as a
+  string, such as in a print statement. This function is optional, and
+  only changes the default behavior of python when converting a class
+  object into a string. See the examples below.
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{class} \PY{n+nc}{MyStringlessClass}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{name}\PY{p}{,}\PY{n}{age}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{name} \PY{o}{=} \PY{n}{name}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{age}  \PY{o}{=} \PY{n}{age}
+
+\PY{n}{stringless} \PY{o}{=} \PY{n}{MyStringlessClass}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Mark}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+m+mi}{37}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{MyStringlessClass}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{stringless}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{not\PYZus{}stringless} \PY{o}{=} \PY{n}{MyClass}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Mark}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+m+mi}{37}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{MyClass}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{not\PYZus{}stringless}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+MyStringlessClass
+<\_\_main\_\_.MyStringlessClass object at 0x7f00a8471ee0>
+
+MyClass
+Mark is 37 years old.
+
+    \end{Verbatim}
+
+    We can see the differences between the two classes in how they are
+displayed through a \texttt{print()} function. We can also create our
+own additional functions that can be called after the class is initially
+created.
+
+We'll continue with an example class to hold information about a single
+atom in a system. I'll be importing \texttt{numpy} as well to make some
+of the internal functions a little easier to work with.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+
+\PY{k}{class} \PY{n+nc}{Atom}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{,}\PY{n}{atomic\PYZus{}number}\PY{p}{,}\PY{n}{charge}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x} \PY{o}{=} \PY{n}{x}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{y} \PY{o}{=} \PY{n}{y}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{z} \PY{o}{=} \PY{n}{z}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{number} \PY{o}{=} \PY{n}{atomic\PYZus{}number}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{charge} \PY{o}{=} \PY{n}{charge}
+    \PY{k}{def} \PY{n+nf}{distance\PYZus{}from\PYZus{}center}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+        \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2} \PY{o}{+} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{y}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2} \PY{o}{+} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{z}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+    \PY{k}{def} \PY{n+nf}{update\PYZus{}location}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x} \PY{o}{=} \PY{n}{x}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{y} \PY{o}{=} \PY{n}{y}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{z} \PY{o}{=} \PY{n}{z}
+    \PY{k}{def} \PY{n+nf}{get\PYZus{}location}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{(}\PY{l+s+si}{\PYZob{}}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{,}\PY{l+s+si}{\PYZob{}}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{y}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{,}\PY{l+s+si}{\PYZob{}}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{z}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{)}\PY{l+s+s2}{\PYZdq{}}
+    \PY{k}{def} \PY{n+nf}{str\PYZus{}charge}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+        \PY{k}{if} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{charge} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{:}
+            \PY{k}{return} \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{+}\PY{l+s+si}{\PYZob{}}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{charge}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}
+        \PY{k}{return} \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{charge}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}str\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Atom located at }\PY{l+s+si}{\PYZob{}}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{get\PYZus{}location}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ with charge of }\PY{l+s+si}{\PYZob{}}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{str\PYZus{}charge}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}
+        
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{chloride} \PY{o}{=} \PY{n}{Atom}\PY{p}{(}\PY{l+m+mf}{3.5}\PY{p}{,}\PY{l+m+mf}{4.2}\PY{p}{,}\PY{l+m+mf}{5.9}\PY{p}{,}\PY{l+m+mi}{17}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{chloride}\PY{p}{)}
+
+\PY{n}{lithium} \PY{o}{=} \PY{n}{Atom}\PY{p}{(}\PY{l+m+mf}{1.0}\PY{p}{,}\PY{l+m+mf}{1.0}\PY{p}{,}\PY{l+m+mf}{1.0}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{lithium}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Atom located at (3.5,4.2,5.9) with charge of -1.
+Atom located at (1.0,1.0,1.0) with charge of +1.
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{chloride}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{chloride}\PY{o}{.}\PY{n}{distance\PYZus{}from\PYZus{}center}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{chloride}\PY{o}{.}\PY{n}{update\PYZus{}location}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{chloride}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{chloride}\PY{o}{.}\PY{n}{distance\PYZus{}from\PYZus{}center}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Atom located at (3.5,4.2,5.9) with charge of -1.
+8.043631020876083
+Atom located at (3,3,3) with charge of -1.
+5.196152422706632
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{lithium}\PY{o}{.}\PY{n}{distance\PYZus{}from\PYZus{}center}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+1.7320508075688772
+\end{Verbatim}
+\end{tcolorbox}
+        
+    As mentioned above, classes can also use other classes inside
+themselves, Let's try making a class for a Molecule that uses Atoms.
+
+First, we want to think about what additional information we need for a
+molecule that isn't already included in the Atoms.
+
+The first thing that comes to mind is bonds.
+
+We can create a class that includes a list of atoms and bonds.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{34}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{class} \PY{n+nc}{Molecule}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{atoms} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{bonds} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}str\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+        \PY{n}{string}  \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Molecule made of }\PY{l+s+s2}{\PYZdq{}}
+        \PY{n}{string} \PY{o}{+}\PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{,}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{p}{[}\PY{n+nb}{str}\PY{p}{(}\PY{n}{atom}\PY{p}{)} \PY{k}{for} \PY{n}{atom} \PY{o+ow}{in} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{atoms}\PY{p}{]}\PY{p}{)}
+        \PY{k}{return} \PY{n}{string}
+    \PY{k}{def} \PY{n+nf}{add\PYZus{}atom}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{,}\PY{n}{number}\PY{p}{,}\PY{n}{charge}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{atoms}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{Atom}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{,}\PY{n}{number}\PY{p}{,}\PY{n}{charge}\PY{p}{)}\PY{p}{)}
+    \PY{k}{def} \PY{n+nf}{add\PYZus{}bond}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{index1}\PY{p}{,}\PY{n}{index2}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{bonds}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{[}\PY{n}{index1}\PY{p}{,}\PY{n}{index2}\PY{p}{]}\PY{p}{)}
+    \PY{k}{def} \PY{n+nf}{get\PYZus{}bond\PYZus{}distance}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{index}\PY{p}{)}\PY{p}{:}
+        \PY{n}{idx1}\PY{p}{,}\PY{n}{idx2} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{bonds}\PY{p}{[}\PY{n}{index}\PY{p}{]}
+        \PY{n}{x1} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{atoms}\PY{p}{[}\PY{n}{idx1}\PY{p}{]}\PY{o}{.}\PY{n}{x}
+        \PY{n}{y1} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{atoms}\PY{p}{[}\PY{n}{idx1}\PY{p}{]}\PY{o}{.}\PY{n}{y}
+        \PY{n}{z1} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{atoms}\PY{p}{[}\PY{n}{idx1}\PY{p}{]}\PY{o}{.}\PY{n}{z}
+        \PY{n}{x2} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{atoms}\PY{p}{[}\PY{n}{idx2}\PY{p}{]}\PY{o}{.}\PY{n}{x}
+        \PY{n}{y2} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{atoms}\PY{p}{[}\PY{n}{idx2}\PY{p}{]}\PY{o}{.}\PY{n}{y}
+        \PY{n}{z2} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{atoms}\PY{p}{[}\PY{n}{idx2}\PY{p}{]}\PY{o}{.}\PY{n}{z}
+        \PY{n}{dist} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{p}{(}\PY{n}{x2}\PY{o}{\PYZhy{}}\PY{n}{x1}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2} \PY{o}{+} \PY{p}{(}\PY{n}{y2}\PY{o}{\PYZhy{}}\PY{n}{y1}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2} \PY{o}{+} \PY{p}{(}\PY{n}{z2}\PY{o}{\PYZhy{}}\PY{n}{z1}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+        \PY{k}{return} \PY{n}{dist}
+    \PY{k}{def} \PY{n+nf}{get\PYZus{}total\PYZus{}charge}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+        \PY{n}{charge} \PY{o}{=} \PY{l+m+mi}{0}
+        \PY{k}{for} \PY{n}{atom} \PY{o+ow}{in} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{atoms}\PY{p}{:}
+            \PY{n}{charge} \PY{o}{+}\PY{o}{=} \PY{n}{atom}\PY{o}{.}\PY{n}{charge}
+        \PY{k}{return} \PY{n}{charge}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{35}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{sulfurhexafluoride} \PY{o}{=} \PY{n}{Molecule}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{36}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{sulfurhexafluoride}\PY{o}{.}\PY{n}{add\PYZus{}atom}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{16}\PY{p}{,}\PY{o}{+}\PY{l+m+mi}{6}\PY{p}{)}
+\PY{n}{sulfurhexafluoride}\PY{o}{.}\PY{n}{add\PYZus{}atom}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{sulfurhexafluoride}\PY{o}{.}\PY{n}{add\PYZus{}atom}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{sulfurhexafluoride}\PY{o}{.}\PY{n}{add\PYZus{}atom}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{sulfurhexafluoride}\PY{o}{.}\PY{n}{add\PYZus{}atom}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{sulfurhexafluoride}\PY{o}{.}\PY{n}{add\PYZus{}atom}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{sulfurhexafluoride}\PY{o}{.}\PY{n}{add\PYZus{}atom}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{38}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{sulfurhexafluoride}\PY{o}{.}\PY{n}{get\PYZus{}total\PYZus{}charge}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{sulfurhexafluoride}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0
+Molecule made of Atom located at (0,0,0) with charge of +6.,Atom located at
+(1,0,0) with charge of -1.,Atom located at (-1,0,0) with charge of -1.,Atom
+located at (0,1,0) with charge of -1.,Atom located at (0,-1,0) with charge of
+-1.,Atom located at (0,0,1) with charge of -1.,Atom located at (0,0,-1) with
+charge of -1.
+    \end{Verbatim}
+
+    As you can see, you can build classes of increasing complexity to serve
+as more manageable data structures for whatever your specific needs may
+be.

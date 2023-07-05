@@ -1,0 +1,15 @@
+\section{Definitions}
+Definitions are the complete set of instructions for a function.  They begin just like a declaration, except that instead of a semicolon, they have the open- and close-curly braces with the full set of commands inside.
+
+\begin{minted}{c++}
+int myfunction(int var1, int var2)
+{
+  // I can have comments inside the function as well.
+  // In fact, I really should have comments inside functions to help other programmers know what's happening.
+  int answer;
+  answer = var1 + var2;
+  return answer;
+}
+\end{minted}
+
+The full function definition above has the return type, arguments, and complete instructions inside the scope, ending with the return value.

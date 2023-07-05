@@ -1,0 +1,223 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Code Formatting}
+Many different research groups, organizations, and companies have what
+are known as ``style guides'' for any code produced in, by, or for the
+organization. These often include the simple concepts like ``how many
+spaces constitute a \texttt{tab} in your code?'' or ``What information,
+if any, should be included in comments at the top of each file?''.
+However, these style guides can also include more complex information
+beyond text formatting and up into things like ``Each function
+definition should include comments describing the arguments to the
+function and what the function returns on completion'' or ``Test suites
+must be included for all additions to the codebase before they may be
+considered for merging''.
+
+Most programming languages have a form of something called
+\textbf{scope}, which is a region in the code in which certain things
+are true. For example, a function may have variables that only exist
+inside that function, and then disappear once the program exits the
+function's \textbf{scope}. Some languages use specific characters to
+define a scope, such as \texttt{C++} with \texttt{\{} and \texttt{\}}
+defining the beginning and end of a scope.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DataTypeTok{int}\NormalTok{ main}\OperatorTok{()}
+\OperatorTok{\{}
+\NormalTok{    cout }\OperatorTok{\textless{}\textless{}} \StringTok{"Hello World!}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\OperatorTok{;}
+    \ControlFlowTok{if} \OperatorTok{(}\DecValTok{5} \OperatorTok{\textless{}} \DecValTok{4}\OperatorTok{)}
+    \OperatorTok{\{}
+\NormalTok{        cout }\OperatorTok{\textless{}\textless{}} \StringTok{"Five is less than four.}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\OperatorTok{;}
+    \OperatorTok{\}}
+    \ControlFlowTok{return}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+A common convention is to use spaces or tabs when moving into different
+levels of scope, however this is usually for easier reading by humans
+and isn't necessary for the code compiler itself.
+
+Others, like \texttt{Python}, use indentations of spaces or tabs and are
+specifically required to change scope.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{def}\NormalTok{ myfunction(x):}
+\NormalTok{    x }\OperatorTok{=}\NormalTok{ x }\OperatorTok{+} \DecValTok{5}
+    \BuiltInTok{print}\NormalTok{(x)}
+    \ControlFlowTok{return}
+
+\NormalTok{x }\OperatorTok{=} \DecValTok{10}
+\BuiltInTok{print}\NormalTok{(x)}
+\NormalTok{myfunction(x)}
+\BuiltInTok{print}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+The code snippet above shows the variable x inside the scope of
+\texttt{myfunction} as well as the main program. If we follow the value
+of \texttt{x} as the program runs, we can see that \texttt{x\ =\ 10},
+which is printed out. Then, the \emph{value} of \texttt{x} is passed
+into the function, which adds five and prints it out
+(\texttt{x\ =\ 15}). Once that is done, the function returns, and the
+main program's value of x is printed out again. (\texttt{x\ =\ 10}).
+
+Let's see how that works in practice.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{myfunction}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{:}
+    \PY{n}{x} \PY{o}{=} \PY{n}{x} \PY{o}{+} \PY{l+m+mi}{5}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+    \PY{k}{return}
+
+\PY{n}{x} \PY{o}{=} \PY{l+m+mi}{10}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+\PY{n}{myfunction}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+10
+15
+10
+    \end{Verbatim}
+
+    It is very important to keep scope in mind when using variables as
+counters or other housekeepers.
+
+Many programmers use \texttt{i} as a counter variable in loops. However,
+sometimes it is necessary to have loops inside other loops (nested),
+which effectively means you have a scope inside another scope. If you
+use \texttt{i} in the outer loop, then change it in the inner loop, it
+remains changed in the outer loop and can have effects on the execution
+of your code.
+
+Therefore, it is important to keep track of what variables are used
+during the execution of your code and how they are modified as you go.
+
+\hypertarget{back-to-formatting}{%
+\paragraph{Back to Formatting}\label{back-to-formatting}}
+
+Formatting is not simply a matter of using indents or
+80-characters-per-line requirements. Formatting also includes things
+like expected code-comments or other internal documentation. Some code
+development packages have the functionality built in to parse comments
+in the code and build human-readable documentation, but it requires the
+use of specific formats in the comments. See the examples below.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k}{def} \PY{n+nf}{myfunction}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{)}\PY{p}{:}
+    \PY{n}{norm} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{p}{[}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{]}\PY{p}{)}
+    \PY{k}{return} \PY{n}{norm}
+\PY{n}{a} \PY{o}{=} \PY{l+m+mi}{1}
+\PY{n}{b} \PY{o}{=} \PY{l+m+mi}{2}
+\PY{n}{c} \PY{o}{=} \PY{l+m+mi}{3}
+\PY{n}{result} \PY{o}{=} \PY{n}{myfunction}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{c}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{result}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+3.7416573867739413
+    \end{Verbatim}
+
+    The code block above has no comments in it, and so without already
+knowing what the individual parts are doing, it's not easy to know what
+is happening in the code or how to modify and manipulate it for your own
+purposes. If we take the same code block and add some commentary, it can
+be made easier.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} library import}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+
+\PY{c+c1}{\PYZsh{} function definition}
+\PY{k}{def} \PY{n+nf}{myfunction}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{)}\PY{p}{:}
+    \PY{n}{norm} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{p}{[}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{]}\PY{p}{)}
+    \PY{k}{return} \PY{n}{norm}
+
+\PY{c+c1}{\PYZsh{} Main program execution}
+\PY{n}{a} \PY{o}{=} \PY{l+m+mi}{1}
+\PY{n}{b} \PY{o}{=} \PY{l+m+mi}{2}
+\PY{n}{c} \PY{o}{=} \PY{l+m+mi}{3}
+\PY{n}{result} \PY{o}{=} \PY{n}{myfunction}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{c}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{result}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+3.7416573867739413
+    \end{Verbatim}
+
+    Now we have a little more clarity in what is happening, but it can still
+be made clearer. As it stands, we simply know that we're importing
+libraries, defining a function, and running the main program.
+
+We can improve the commentary further by describing what is happening in
+the function or the steps inside the main program.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} library import}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+
+\PY{c+c1}{\PYZsh{} function definition}
+\PY{k}{def} \PY{n+nf}{myfunction}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} Arguments:}
+    \PY{c+c1}{\PYZsh{} x \PYZhy{} float representing the x component of a vector}
+    \PY{c+c1}{\PYZsh{} y \PYZhy{} float representing the y component of a vector}
+    \PY{c+c1}{\PYZsh{} z \PYZhy{} float representing the z component of a vector}
+    \PY{c+c1}{\PYZsh{} Returns:}
+    \PY{c+c1}{\PYZsh{} norm \PYZhy{} float representing the magnitude of the vector given by the [x,y,z] values}
+    \PY{n}{norm} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{p}{[}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{]}\PY{p}{)}
+    \PY{k}{return} \PY{n}{norm}
+
+\PY{c+c1}{\PYZsh{} Main program execution}
+\PY{c+c1}{\PYZsh{} initialize variables }
+\PY{n}{a} \PY{o}{=} \PY{l+m+mi}{1}
+\PY{n}{b} \PY{o}{=} \PY{l+m+mi}{2}
+\PY{n}{c} \PY{o}{=} \PY{l+m+mi}{3}
+\PY{c+c1}{\PYZsh{} obtain the magnitude of the vector defined by [a,b,c]}
+\PY{n}{result} \PY{o}{=} \PY{n}{myfunction}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{c}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} print out the magnitude}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{result}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+3.7416573867739413
+    \end{Verbatim}
+
+    With this level of commentary in the code, we can easily understand what
+is happening in the function and the main code block. This is very
+useful when working on collaborative projects especially, as it can
+ensure that everyone is able to follow your thought process in the code
+and, if necessary, compare to the actual code for debugging purposes.
+
+Another thing to consider is the larger format of a project. That is,
+not simply how the text is arranged in a file, but how code blocks and
+functions are arranged in multiple files. For smaller programs, it may
+not be necessary to divide the code up in this way, but for larger
+projects - or for standard functions you'll use in multiple separate
+projects - it may be easier and cleaner to keep some things separated
+and compartmentalized. This also makes compiling easier later on down
+the line.
+
+It can also lead to smaller individual files, making debugging easier as
+well - most error messages include the location where the error was
+encountered, and it's much easier to go to
+\texttt{line\ 46\ in\ utility.cpp} than it is to go to
+\texttt{line\ 57684\ in\ main.cpp}. As a bonus, making changes in
+smaller files won't necessarily require the entire codebase to be
+recompiled, but rather just the small portion you modified.
+

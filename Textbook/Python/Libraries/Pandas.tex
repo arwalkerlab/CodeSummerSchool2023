@@ -1,0 +1,488 @@
+\section{Library - Pandas}
+Pandas is a wonderful data organization and processing library. It works
+off of a single major underlying structure, the \texttt{DataFrame}. The
+\texttt{DataFrame} is an object that can be described as a ``dictionary
+of dictionaries''. Similar to how previous examples have shown that you
+can have nested dictionary datatypes, Pandas takes it a step further and
+provides tools to organize, manipulate, combine, compare, and store
+these multi-layer dictionaries. Pandas also includes built-in Excel
+Spreadsheet creation functionality, meaning that you can transform your
+data into more complex structures in Excel, making it easier to share
+with collaborators.
+
+Let's look at an example of a simple dataframe with just a few rows and
+columns.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+
+\PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{[}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{First Name}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Zee}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{40}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Team}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Blue}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{,}
+                   \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{First Name}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Charlotte}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{45}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Team}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Red}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{,}
+                   \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{First Name}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Wilbur}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{50}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Team}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Green}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{display}\PY{p}{(}\PY{n}{df}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+  First Name  Age   Team
+0        Zee   40   Blue
+1  Charlotte   45    Red
+2     Wilbur   50  Green
+    \end{Verbatim}
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{df}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+  First Name  Age   Team
+0        Zee   40   Blue
+1  Charlotte   45    Red
+2     Wilbur   50  Green
+    \end{Verbatim}
+
+    Notice the difference between \texttt{display} and \texttt{print} in the
+example above. It should be pointed out that \texttt{display} is
+functional in notebook environments only, not in terminals. Trying to
+use \texttt{display} in a terminal will result in an error.
+
+You can add to existing dataframes by appending new rows. Each row will
+be made as a dictionary beforehand.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{newrow} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{First Name}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Iroh}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{99}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Team}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Red}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}
+\PY{n}{df} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{newrow}\PY{p}{,}\PY{n}{ignore\PYZus{}index}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{display}\PY{p}{(}\PY{n}{df}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+  First Name  Age   Team
+0        Zee   40   Blue
+1  Charlotte   45    Red
+2     Wilbur   50  Green
+3       Iroh   99    Red
+    \end{Verbatim}
+
+    
+    Notice that we had to reassign the dataframe when we added the new row.
+This is because all of the internal dataframe functions return a
+\emph{new} dataframe object. This method ensures that dataframes are not
+overwritten on accident, and that data is not lost without intent. Also,
+we now have two rows that have a shared value in a column. We can sort
+the rows by specific columns, which can be used to group things
+together. We can also group by multiple columns to have improved
+organization.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df2} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Team}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{ascending}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{display}\PY{p}{(}\PY{n}{df2}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+  First Name  Age   Team
+0        Zee   40   Blue
+2     Wilbur   50  Green
+1  Charlotte   45    Red
+3       Iroh   99    Red
+    \end{Verbatim}
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df3} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Team}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,}\PY{n}{ascending}\PY{o}{=}\PY{p}{[}\PY{k+kc}{True}\PY{p}{,}\PY{k+kc}{False}\PY{p}{]}\PY{p}{)}
+\PY{n}{display}\PY{p}{(}\PY{n}{df3}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+  First Name  Age   Team
+0        Zee   40   Blue
+2     Wilbur   50  Green
+3       Iroh   99    Red
+1  Charlotte   45    Red
+    \end{Verbatim}
+
+    
+    In the first cell, we sort only by the column ``Team'', and put the
+results in ascending order. Pandas uses alphabetical sorting unless all
+cells in a column are \emph{entirely} numerical.
+
+In the second cell, we sorted by a list, which means the whole dataframe
+is sorted by the first element, and any rows that have the same value in
+that first element are then sorted by the second element, and so on.
+Additionally, we use a second list for the ascending values to set the
+ascending/descending state for each element being sorted.
+
+What if we wanted just the values in one column? We can call the
+dataframe like we would a dictionary, using the square brackets and a
+column name.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0    40
+1    45
+2    50
+3    99
+Name: Age, dtype: int64
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{values}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[40 45 50 99]
+    \end{Verbatim}
+
+    We can also call individual rows with the \texttt{.iloc} function. In
+the example below, \texttt{.iloc(0)} indicates we're iterating on the
+0th axis, which is down the rows. The \texttt{{[}2{]}} indicates we want
+the data at index 2 in that list of rows. In the original \texttt{df}
+dataframe object, that is the third row.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{iloc}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+First Name    Wilbur
+Age               50
+Team           Green
+Name: 2, dtype: object
+    \end{Verbatim}
+
+    Let's consider an example that might be more relevant to the lab. Mark
+is currently working on a Automated Fluorescent Nucleotide Workflow
+(that needs a better name with a fun acronym). Over time, this workflow
+is intended to produce large amounts of data for hundreds - even
+thousands - of molecules. We want to use this data in a machine learning
+model to predict possible new fluorescent nucleotides.
+
+We can use Pandas to organize this data into a more easily managed form.
+
+What are the different things to consider for each of the molecules? -
+Sugar type (Ribose / Deoxyribose) - Nucleobase (A/C/G/T/U) - Connection
+point on the base (C6,C5, etc.) - Tag structure and connection point. -
+Absorption Wavelength - Emission Wavelength - Quantum Yield
+
+Let's assume that we don't have all that information for every single
+molecule just yet. In fact, that's kind of the point of machine
+learning, filling in the gaps of data.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{54}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{} A list of all the columns we want in our dataframe, corresponding to values we want to keep track of for each system.}
+\PY{n}{df\PYZus{}columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Sugar}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Base}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ConnectionPoint}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{FluorescentTag}\PY{l+s+s2}{\PYZdq{}}\PY{p}{, }\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{AbsorptionWavelength}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{EmissionWavelength}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{QuantumYield}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{} Initialize the dataframe without data, just column names}
+\PY{n}{nucleotides} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{n}{df\PYZus{}columns}\PY{p}{)}
+
+\PY{n}{display}\PY{p}{(}\PY{n}{nucleotides}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Empty DataFrame
+Columns: [Sugar, Base, ConnectionPoint, FluorescentTag, AbsorptionWavelength, EmissionWavelength, QuantumYield]
+Index: []
+    \end{Verbatim}
+
+    
+    I'm including a function below to make my life easier for the example
+process, but if we haven't talked about functions yet, you can ignore it
+for now.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{55}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{add\PYZus{}molecule}\PY{p}{(}\PY{n}{df}\PY{p}{,}\PY{o}{*}\PY{o}{*}\PY{n}{kwargs}\PY{p}{)}\PY{p}{:}
+    \PY{n}{new\PYZus{}molecule} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+    \PY{k}{for} \PY{n}{key}\PY{p}{,}\PY{n}{val} \PY{o+ow}{in} \PY{n}{kwargs}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+        \PY{n}{new\PYZus{}molecule}\PY{p}{[}\PY{n}{key}\PY{p}{]} \PY{o}{=} \PY{n}{val}
+    \PY{n}{df} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{new\PYZus{}molecule}\PY{p}{,}\PY{n}{ignore\PYZus{}index}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+    \PY{k}{return} \PY{n}{df}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{56}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{nucleotides} \PY{o}{=} \PY{n}{add\PYZus{}molecule}\PY{p}{(}\PY{n}{nucleotides}\PY{p}{,}\PY{n}{Sugar}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Ribose}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{Base}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{ConnectionPoint}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C5}\PY{l+s+s2}{\PYZdq{}}\PY{p}{, }\PY{n}{AbsorptionWavelength}\PY{o}{=}\PY{l+m+mi}{380}\PY{p}{,}\PY{n}{EmissionWavelength}\PY{o}{=}\PY{l+m+mi}{415}\PY{p}{,}\PY{n}{QuantumYield}\PY{o}{=}\PY{l+m+mf}{.93}\PY{p}{)}
+\PY{n}{nucleotides} \PY{o}{=} \PY{n}{add\PYZus{}molecule}\PY{p}{(}\PY{n}{nucleotides}\PY{p}{,}\PY{n}{Sugar}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Ribose}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{Base}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{FluorescentTag}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Perylene}\PY{l+s+s2}{\PYZdq{}}\PY{p}{, }\PY{n}{ConnectionPoint}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C6}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{EmissionWavelength}\PY{o}{=}\PY{l+m+mi}{465}\PY{p}{,}\PY{n}{QuantumYield}\PY{o}{=}\PY{l+m+mf}{.96}\PY{p}{)}
+\PY{n}{nucleotides} \PY{o}{=} \PY{n}{add\PYZus{}molecule}\PY{p}{(}\PY{n}{nucleotides}\PY{p}{,}\PY{n}{Sugar}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Deoxyribose}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{Base}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{FluorescentTag}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Benzopyrene}\PY{l+s+s2}{\PYZdq{}}\PY{p}{, }\PY{n}{ConnectionPoint}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C5}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{AbsorptionWavelength}\PY{o}{=}\PY{l+m+mi}{360}\PY{p}{,}\PY{n}{EmissionWavelength}\PY{o}{=}\PY{l+m+mi}{395}\PY{p}{)}
+\PY{n}{nucleotides} \PY{o}{=} \PY{n}{add\PYZus{}molecule}\PY{p}{(}\PY{n}{nucleotides}\PY{p}{,}\PY{n}{Sugar}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Deoxyribose}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{Base}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{FluorescentTag}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Furan}\PY{l+s+s2}{\PYZdq{}}\PY{p}{, }\PY{n}{ConnectionPoint}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C6}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{AbsorptionWavelength}\PY{o}{=}\PY{l+m+mi}{390}\PY{p}{,}\PY{n}{QuantumYield}\PY{o}{=}\PY{l+m+mf}{.75}\PY{p}{)}
+
+\PY{n}{display}\PY{p}{(}\PY{n}{nucleotides}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+         Sugar Base ConnectionPoint FluorescentTag AbsorptionWavelength  \textbackslash{}
+0       Ribose    C              C5            NaN                  380   
+1       Ribose    C              C6       Perylene                  NaN   
+2  Deoxyribose    C              C5    Benzopyrene                  360   
+3  Deoxyribose    C              C6          Furan                  390   
+
+  EmissionWavelength  QuantumYield  
+0                415          0.93  
+1                465          0.96  
+2                395           NaN  
+3                NaN          0.75  
+    \end{Verbatim}
+
+    
+    In the above cell, we can see that empty values are printed as
+\texttt{NaN}. We can clear those out and replace them with empty cells
+to make it easier to see where the data is missing.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{57}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{display}\PY{p}{(}\PY{n}{nucleotides}\PY{o}{.}\PY{n}{fillna}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+         Sugar Base ConnectionPoint FluorescentTag AbsorptionWavelength  \textbackslash{}
+0       Ribose    C              C5                                 380   
+1       Ribose    C              C6       Perylene                        
+2  Deoxyribose    C              C5    Benzopyrene                  360   
+3  Deoxyribose    C              C6          Furan                  390   
+
+  EmissionWavelength QuantumYield  
+0                415         0.93  
+1                465         0.96  
+2                395               
+3                            0.75  
+    \end{Verbatim}
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{58}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{display}\PY{p}{(}\PY{n}{nucleotides}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{AbsorptionWavelength}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{EmissionWavelength}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{QuantumYield}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{fillna}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+         Sugar Base ConnectionPoint FluorescentTag AbsorptionWavelength  \textbackslash{}
+2  Deoxyribose    C              C5    Benzopyrene                  360   
+0       Ribose    C              C5                                 380   
+3  Deoxyribose    C              C6          Furan                  390   
+1       Ribose    C              C6       Perylene                        
+
+  EmissionWavelength QuantumYield  
+2                395               
+0                415         0.93  
+3                            0.75  
+1                465         0.96  
+    \end{Verbatim}
+
+    
+    Let's generate some random data to mess with.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{71}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{n}{base\PYZus{}list}\PY{o}{=}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{A\PYZus{}C2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{A\PYZus{}C8}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C\PYZus{}C5}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C\PYZus{}C6}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{G\PYZus{}C2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{G\PYZus{}C8}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{G\PYZus{}N7}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{U\PYZus{}C6}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{U\PYZus{}C5}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{T\PYZus{}C6}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+\PY{n}{sugar\PYZus{}list}\PY{o}{=}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Ribose}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Deoxyribose}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+\PY{n}{tag\PYZus{}list} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Perylene}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Benzopyrene}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Furan}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Naphthalene}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Beta Carotene}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Imidazole}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+\PY{n}{nucleotides} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{n}{df\PYZus{}columns}\PY{p}{)}
+\PY{k}{for} \PY{n}{base} \PY{o+ow}{in} \PY{n}{base\PYZus{}list}\PY{p}{:}
+    \PY{k}{for} \PY{n}{sugar} \PY{o+ow}{in} \PY{n}{sugar\PYZus{}list}\PY{p}{:}
+        \PY{k}{for} \PY{n}{tag} \PY{o+ow}{in} \PY{n}{tag\PYZus{}list}\PY{p}{:}
+            \PY{n}{abs\PYZus{}wl} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{l+m+mi}{355}\PY{p}{,}\PY{l+m+mi}{800}\PY{p}{)}
+            \PY{n}{emi\PYZus{}wl} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{n}{abs\PYZus{}wl}\PY{p}{,}\PY{l+m+mi}{850}\PY{p}{)}
+            \PY{n}{nucleotides} \PY{o}{=} \PY{n}{add\PYZus{}molecule}\PY{p}{(}\PY{n}{nucleotides}\PY{p}{,}\PY{n}{Sugar}\PY{o}{=}\PY{n}{sugar}\PY{p}{,}\PY{n}{Base}\PY{o}{=}\PY{n}{base}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZus{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{n}{ConnectionPoint}\PY{o}{=}\PY{n}{base}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZus{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{n}{FluorescentTag}\PY{o}{=}\PY{n}{tag}\PY{p}{,}\PY{n}{AbsorptionWavelength}\PY{o}{=}\PY{n}{abs\PYZus{}wl}\PY{p}{,}\PY{n}{EmissionWavelength}\PY{o}{=}\PY{n}{emi\PYZus{}wl}\PY{p}{,}\PY{n}{QuantumYield}\PY{o}{=}\PY{n+nb}{round}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{72}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{display}\PY{p}{(}\PY{n}{nucleotides}\PY{o}{.}\PY{n}{fillna}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+           Sugar Base ConnectionPoint FluorescentTag  AbsorptionWavelength  \textbackslash{}
+0         Ribose    A              C2       Perylene                   561   
+1         Ribose    A              C2    Benzopyrene                   664   
+2         Ribose    A              C2          Furan                   604   
+3         Ribose    A              C2    Naphthalene                   424   
+4         Ribose    A              C2  Beta Carotene                   774   
+..           {\ldots}  {\ldots}             {\ldots}            {\ldots}                   {\ldots}   
+115  Deoxyribose    T              C6    Benzopyrene                   602   
+116  Deoxyribose    T              C6          Furan                   531   
+117  Deoxyribose    T              C6    Naphthalene                   489   
+118  Deoxyribose    T              C6  Beta Carotene                   697   
+119  Deoxyribose    T              C6      Imidazole                   389   
+
+     EmissionWavelength  QuantumYield  
+0                   828          0.65  
+1                   771          0.55  
+2                   737          0.09  
+3                   734          0.61  
+4                   791          0.01  
+..                  {\ldots}           {\ldots}  
+115                 808          0.38  
+116                 776          0.91  
+117                 639          0.68  
+118                 757          0.11  
+119                 529          0.09  
+
+[120 rows x 7 columns]
+    \end{Verbatim}
+
+    
+    Note here that the full dataframe is not shown, but rather displays only
+the first five and last five rows. The dimensions of the dataframe are
+given below it. In this case, it's 120 rows and 7 columns.
+
+What if we wanted to sort the data by Quantum Yield?
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{73}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{nucleotides}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{QuantumYield}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{ascending}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{73}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+           Sugar Base ConnectionPoint FluorescentTag AbsorptionWavelength  \textbackslash{}
+83   Deoxyribose    G              N7      Imidazole                  587
+92   Deoxyribose    U              C6          Furan                  724
+21   Deoxyribose    A              C8    Naphthalene                  513
+70   Deoxyribose    G              C8  Beta Carotene                  643
+29        Ribose    C              C5      Imidazole                  450
+..           {\ldots}  {\ldots}             {\ldots}            {\ldots}                  {\ldots}
+44   Deoxyribose    C              C6          Furan                  588
+89        Ribose    U              C6      Imidazole                  415
+26        Ribose    C              C5          Furan                  761
+110       Ribose    T              C6          Furan                  419
+4         Ribose    A              C2  Beta Carotene                  774
+
+    EmissionWavelength  QuantumYield
+83                 740          1.00
+92                 846          0.99
+21                 765          0.98
+70                 758          0.96
+29                 500          0.95
+..                 {\ldots}           {\ldots}
+44                 828          0.06
+89                 707          0.03
+26                 797          0.01
+110                472          0.01
+4                  791          0.01
+
+[120 rows x 7 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Keep in mind that the above result did not sort the dataframe in itself,
+it just presented the results of a sorting algorithm applied to it. Note
+the indices on the left side and how they're out of order.
+
+Now, what if we wanted to plot some of the data from our dataframe?
+
+If our dataframe is simple enough, we can just call the \texttt{plot()}
+function directly from it, which returns a \texttt{matplotlib\ Axes}
+object.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{83}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{]}\PY{p}{,}\PY{n}{dpi}\PY{o}{=}\PY{l+m+mi}{300}\PY{p}{)}
+\PY{n}{ax} \PY{o}{=} \PY{n}{nucleotides}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+<Figure size 1500x1200 with 0 Axes>
+    \end{Verbatim}
+
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_29_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    We can also simply call columns of our data as though they were any
+other array of numbers (assuming the column is, in fact, strictly
+numerical).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{85}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{]}\PY{p}{,}\PY{n}{dpi}\PY{o}{=}\PY{l+m+mi}{300}\PY{p}{)}
+\PY{n}{ax} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{nucleotides}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{AbsorptionWavelength}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,}\PY{n}{nucleotides}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{EmissionWavelength}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,}\PY{n}{s}\PY{o}{=}\PY{n}{ nucleotides}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{QuantumYield}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{*}\PY{l+m+mi}{5}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} I have included the QuantumYield column values as the marker size variable so that each point gives us the absorption/emission wavelengths and the quantum yields.}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{85}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<matplotlib.collections.PathCollection at 0x7f45f705cfd0>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_31_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}

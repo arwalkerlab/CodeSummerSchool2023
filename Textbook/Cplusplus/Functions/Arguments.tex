@@ -1,0 +1,128 @@
+\section{Arguments}
+Arguments are the pieces of information we're passing to the function inside the parentheses whenever we call it.  Each argument needs its own datatype.  There are two ways in which arguments may be passed to a function, and both have very specific outcomes.  In general, it's a good idea to use the first unless you specifically \textbf{need} to use the second.
+
+\subsection{Pass-By-Value}
+The first method of argument passing is called "pass-by-value", and is the standard way of sending information to a function.  Let's see an example below.
+
+\begin{minted}{c++}
+#include <iostream>
+#include <cstdlib>
+#include <cstring>
+
+using namespace std;
+
+double multiply(double var1, double var2);
+void print_this(string var1);
+
+int main()
+{
+        double my_var1, my_var2;
+        my_var1 = 10.5;
+        my_var2 = 2.0;
+        double answer;
+        cout << "The values are " << my_var1 << " and " << my_var2 << endl;
+        answer = multiply(my_var1,my_var2);
+        cout << "The result is " << answer << endl;
+        cout << "The values are " << my_var1 << " and " << my_var2 << endl;
+        print_this("random string");
+        return 0;
+}
+
+double multiply(double var1, double var2)
+{
+        double answer;
+        answer = var1*var2;
+        cout << "changing var1 to something else" << endl;
+        var1 = 55.3;
+        cout << "var1 is now " << var1 << endl;
+        return answer;
+
+}
+
+void print_this(string var1)
+{
+        cout << "Passed variable was: " << var1 << endl;
+        // NOTE THE LACK OF RETURN HERE!
+}
+\end{minted}
+
+This code block shows us two different functions, both using pass-by-value.  What this means is that the program sends the value of the variable to the function, \textit{not the variable itself}.  Think of it like sending a copy of the static value at the time of the function call, rather than the original.  Pass-by-value maintains the scope of the variables.  In the \texttt{main()} function above, the line that reads \texttt{answer = multiple(my\_var1,my\_var2)} is interpreted at execution to be \texttt{answer = multiple(10.5,2.0)}.  If we compile and run the code block above, we will see that the value of \texttt{my\_var1} and \texttt{my\_var2} do not change during the execution of the function itself, even though the value inside the function does change.
+\subsection{Pass-By-Reference}
+Pass-by-reference allows us to modify variables inside a function and have those modifications hold after exiting that function.  The function, rather than taking the \textbf{value} of the variable being passed, takes the \textbf{memory location} of the variable, and changes the data at that location.  Pass-by-reference is signified by including the ampersand (\&) character with the variable name in the function declaration and definition.  Let's look at the above code block after modifying it to be pass-by-reference.
+
+\begin{minted}{c++}
+#include <iostream>
+#include <cstdlib>
+#include <cstring>
+
+using namespace std;
+
+double multiply(double &var1, double &var2);
+void print_this(string var1);
+
+int main()
+{
+        double my_var1, my_var2;
+        my_var1 = 10.5;
+        my_var2 = 2.0;
+        double answer;
+        cout << "The values are " << my_var1 << " and " << my_var2 << endl;
+        answer = multiply(my_var1,my_var2);
+        cout << "The result is " << answer << endl;
+        cout << "The values are " << my_var1 << " and " << my_var2 << endl;
+        print_this("random string");
+        return 0;
+}
+
+double multiply(double &var1, double &var2)
+{
+        double answer;
+        answer = var1*var2;
+        cout << "changing var1 to something else" << endl;
+        var1 = 55.3;
+        cout << "var1 is now " << var1 << endl;
+        return answer;
+
+}
+
+void print_this(string var1)
+{
+        cout << "Passed variable was: " << var1 << endl;
+        // NOTE THE LACK OF RETURN HERE!
+}
+\end{minted}
+
+Note that this code block is almost identical to the previous example, except for the declaration and definition of \texttt{multiply(double \&var1, double \&var2)}, which now has the \& character included.  If we compiled and ran this code, we would see the value of my\_var1 would actually be changed in the main program after modification in the \texttt{multiply} function.
+
+The most common use for pass-by-reference functions is when you have multiple values that need to be changed and that cannot be passed back as a single variable object.  For example, in a molecular dynamics program, a function may be written to update information about a single atom.  The information may include position (3 variables), velocity (3 variables), net force on the atom (3 variables), and so on.  Additionally, pass-by-reference can be better for memory management, as your program will not require additional memory overhead to store the temporary copies of data inside each function that uses it.
+
+\begin{homework}
+\paragraph{}Practice writing some small functions for the following scientific equations. Think about what needs to be passed to the function and what can be defined internally or used as a constant.
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+$P = nRT/V$ & $P$ = Pressure \\
+& $n$ = number of particles (in mol)\\
+& $R$ = gas constant \\
+& $T$ = temperature \\
+& $V$ = volume \\ \hline
+
+$\langle T\rangle = -\frac{1}{2}\sum\limits_{k=1}^{N}\langle F_k \cdot r_k \rangle$ & 
+$\langle T\rangle$ = Total Kinetic Energy \\
+& $N$ = number of particles \\
+& $F_k$ = force on the $k$th particle \\
+& $r_k$ = position of the $k$th particle \\ \hline
+
+$k = Ae^{\frac{-E_a}{RT}}$ & $k$ = rate constant \\
+& $A$ = pre-exponential factor \\
+& $E_a$ = activation energy \\
+& $R$ = gas constant \\
+& $T$ = temperature \\
+
+\hline
+\end{tabular}
+\end{center}
+
+Feel free to come up with other equations to convert to functions, and don't forget to comment your code!
+\end{homework}

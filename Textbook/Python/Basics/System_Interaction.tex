@@ -1,0 +1,145 @@
+\section{System Interaction}
+One of the included modules in python is the \texttt{subprocess} module,
+which allows you to execute shell commands on a Linux system from within
+your python script. You can also use it to read the outputs from these
+commands. There are a few different options available to manage these
+kinds of system/program interactions.
+
+\hypertarget{subprocess.call}{%
+\paragraph{subprocess.call()}\label{subprocess.call}}
+
+The \texttt{subprocess.call()} function is fairly straightforward. It is
+useful if you need to execute a command without concern for the output
+to the terminal of that command.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{subprocess}
+
+\PY{n}{subprocess}\PY{o}{.}\PY{n}{call}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ls \PYZhy{}lrth}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{shell}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+total 48K
+-rw-rw-r-- 1 mark mark    0 Jun 13 16:37 19\_Python\_System\_Interaction.ipynb
+-rw-rw-r-- 1 mark mark    0 Jun 13 16:38 20\_Python\_Final\_Project.ipynb
+drwxrwxr-x 2 mark mark 4.0K Jun 17 16:45 test\_data
+-rw-rw-r-- 1 mark mark  33K Jun 17 17:01 17\_Python\_File\_IO.ipynb
+-rw-rw-r-- 1 mark mark 4.8K Jun 17 17:35 18\_Python\_Error\_Handling.ipynb
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+0
+\end{Verbatim}
+\end{tcolorbox}
+        
+    In a notebook environment, the results of the \texttt{subprocess.call()}
+command are simply printed to the output of the cell. In a regular
+system environment, this output is printed to the terminal. The
+important thing to remember, however, is that neither of those options
+allow for the capture and storage of the output by python. In the
+example above, we as a user can see the output of our \texttt{ls\ -lrth}
+command, but our \textbf{program} cannot.
+
+I often use the \texttt{call()} function when calling external programs
+from within my python scripts, specifically when those programs will
+produce their own output files that I can use later. In these scenarios,
+the outputs to the terminal are not as important.
+
+Also, note that \texttt{subprocess.call} includes a keyword argument
+\texttt{shell=True}. This is \emph{required} to have the command
+actually run in your shell environment.
+
+\hypertarget{subprocess.popen}{%
+\paragraph{subprocess.Popen()}\label{subprocess.popen}}
+
+The other kind of system interaction requires the capture and storage of
+the terminal outputs. The \texttt{Popen} command can be used in the same
+way as \texttt{call}, but with some additional keywords and with the
+functionality included to capture the response from the commands.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{subprocess}
+
+\PY{n}{proc} \PY{o}{=} \PY{n}{subprocess}\PY{o}{.}\PY{n}{Popen}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ls \PYZhy{}lrth}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{shell}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{stdout}\PY{o}{=}\PY{n}{subprocess}\PY{o}{.}\PY{n}{PIPE}\PY{p}{,}\PY{n}{stderr}\PY{o}{=}\PY{n}{subprocess}\PY{o}{.}\PY{n}{PIPE}\PY{p}{)}
+\PY{n}{output}\PY{p}{,}\PY{n}{errors} \PY{o}{=} \PY{n}{proc}\PY{o}{.}\PY{n}{communicate}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{output}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+b'total 48K\textbackslash{}n-rw-rw-r-- 1 mark mark    0 Jun 13 16:37
+19\_Python\_System\_Interaction.ipynb\textbackslash{}n-rw-rw-r-- 1 mark mark    0 Jun 13 16:38
+20\_Python\_Final\_Project.ipynb\textbackslash{}ndrwxrwxr-x 2 mark mark 4.0K Jun 17 16:45
+test\_data\textbackslash{}n-rw-rw-r-- 1 mark mark  33K Jun 17 17:01
+17\_Python\_File\_IO.ipynb\textbackslash{}n-rw-rw-r-- 1 mark mark 4.8K Jun 17 17:35
+18\_Python\_Error\_Handling.ipynb\textbackslash{}n'
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{errors}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+b''
+    \end{Verbatim}
+
+    You will note that when the \texttt{output} and \texttt{errors}
+variables are printed, they have a \texttt{b} at the front of the
+string. This is an important thing to be aware of - these outputs are
+\emph{technically} in binary format, not plain-text. Fortunately, the
+python \texttt{print} function can translate from binary to text.
+However, working with binary data can be slightly more difficult in some
+ways, and it might be easier for us to convert to plain strings before
+parsing information. We can use the \texttt{decode} function for this.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{decoded} \PY{o}{=} \PY{n}{output}\PY{o}{.}\PY{n}{decode}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{utf\PYZhy{}8}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{decoded}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+total 48K
+-rw-rw-r-- 1 mark mark    0 Jun 13 16:37 19\_Python\_System\_Interaction.ipynb
+-rw-rw-r-- 1 mark mark    0 Jun 13 16:38 20\_Python\_Final\_Project.ipynb
+drwxrwxr-x 2 mark mark 4.0K Jun 17 16:45 test\_data
+-rw-rw-r-- 1 mark mark  33K Jun 17 17:01 17\_Python\_File\_IO.ipynb
+-rw-rw-r-- 1 mark mark 4.8K Jun 17 17:35 18\_Python\_Error\_Handling.ipynb
+
+    \end{Verbatim}
+
+    The variable \texttt{output} that we got from the \texttt{communicate}
+function has its own internal function called \texttt{decode}, which we
+call with the argument \texttt{"utf-8"}, indicating we want to use that
+particular Unicode formatting. Note that the resulting string does NOT
+have the \texttt{b} at the front, and is printed like any other string.
+We can also use this data like any other string, with \texttt{split}
+commands and other types of parsing to get the information we want from
+the output.
+
+Anyone who has looked into the \texttt{TCFreeze} code will recognize the
+\texttt{subprocess} module as an integral part of the larger algorithm.
+\texttt{TCFreeze} uses \texttt{subprocess.call()} to use TeraChem at
+every iteration of the process.
+
+Try out some of your own commands to get a feel for how the different
+interactions work.

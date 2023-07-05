@@ -1,0 +1,319 @@
+\section{File I/O}
+I/O stands for ``Input/Output''. Loading files into your programs,
+parsing the data inside, and being able to use, manipulate, transform,
+present, and save the results is a very important skillset.
+
+    \hypertarget{reading-files}{%
+\subsubsection{Reading Files}\label{reading-files}}
+
+Python has a few different ways to read files, but for now we'll stick
+with plain-text files like you'll get from various analysis programs or
+computational chemistry software packages. Python can also read binary
+data files, but that's generally more advanced and requires a bit more
+experience.
+
+The number one rule to remember for any and all files is that if you
+\textbf{open} it, you must \textbf{close} it. A file that is opened and
+never closed can either wind up inaccessible to other programs or the
+user, or the data that was meant to be stored within can be lost.
+
+See the example below. With the \texttt{open} function, we create a
+\textbf{file object} that has several useful internal functions we can
+take advantage of. \texttt{open()} takes two arguments - the filename
+first, then the type of action to be taken on the file. ``r'' is for
+``read mode'', ``w'' is for ``write mode'' which starts at the beginning
+of the file and writes (including overwriting!), and ``a'' is for
+``append mode'', which acts like ``write mode'' except that it adds to
+the end of the file rather than overwriting it.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{myfile} \PY{o}{=} \PY{n+nb}{open}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{test\PYZus{}data/file\PYZus{}reading.txt}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{r}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{contents} \PY{o}{=} \PY{n}{myfile}\PY{o}{.}\PY{n}{read}\PY{p}{(}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{type}\PY{p}{(}\PY{n}{contents}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{contents}\PY{p}{)}
+
+\PY{n}{myfile}\PY{o}{.}\PY{n}{close}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+<class 'str'>
+This is just a normal text file.
+There are words.  There are sentences.  There are lines.
+
+There was even a blank line.
+After this sentence is the end of the file, usually called "EOF".
+    \end{Verbatim}
+
+    As you can see, the entire file can be read into a single string, which
+includes all the line breaks and everything within. This can be easiest
+if you have a small file, or if you know exactly the structure of the
+data inside.
+
+There is also a function that can read one line at a time. This
+function, \texttt{readline()}, returns the \emph{next} line in the file,
+up to the newline character, \texttt{\textbackslash{}n}. We often use
+this if the file is large, or if there are multiple line formats in the
+file (such as we might see in a TeraChem output file), or if we want to
+keep memory usage low.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{myfile} \PY{o}{=} \PY{n+nb}{open}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{test\PYZus{}data/file\PYZus{}reading.txt}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{r}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{contents} \PY{o}{=} \PY{n}{myfile}\PY{o}{.}\PY{n}{readline}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{contents}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} We\PYZsq{}ve already read the first line, but if we do the same set of commands again, we\PYZsq{}ll get the next line}
+
+\PY{n}{contents} \PY{o}{=} \PY{n}{myfile}\PY{o}{.}\PY{n}{readline}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{contents}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} And again, for the third. (see above, the third line is blank!)}
+
+\PY{n}{contents} \PY{o}{=} \PY{n}{myfile}\PY{o}{.}\PY{n}{readline}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{contents}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} Fourth}
+
+\PY{n}{contents} \PY{o}{=} \PY{n}{myfile}\PY{o}{.}\PY{n}{readline}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{contents}\PY{p}{)}
+
+\PY{n}{myfile}\PY{o}{.}\PY{n}{close}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+This is just a normal text file.
+
+There are words.  There are sentences.  There are lines.
+
+
+
+There was even a blank line.
+
+    \end{Verbatim}
+
+    We can also get and keep all the lines in memory stored as a
+\texttt{list}, with each element of the list holding one line of the
+file as a string. This uses a function called \texttt{readlines()},
+which has the \texttt{s} at the end to keep it separate from the last
+function, \texttt{readline()}.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{myfile} \PY{o}{=} \PY{n+nb}{open}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{test\PYZus{}data/file\PYZus{}reading.txt}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{r}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{all\PYZus{}lines}\PY{o}{=}\PY{n}{myfile}\PY{o}{.}\PY{n}{readlines}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{all\PYZus{}lines}\PY{p}{)}
+\PY{n}{myfile}\PY{o}{.}\PY{n}{close}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+['This is just a normal text file.\textbackslash{}n', 'There are words.  There are sentences.
+There are lines.  \textbackslash{}n', '\textbackslash{}n', 'There was even a blank line.\textbackslash{}n', 'After this
+sentence is the end of the file, usually called "EOF".']
+    \end{Verbatim}
+
+    Now you can see all the lines in the file, but presented as a list of
+strings instead of the formatted text. With the list structure of the
+\texttt{readlines()} function, you can then do more complicated things
+to the individual lines by iterating through the list, or choose
+specific lines with list-slicing like we discussed previously.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{for} \PY{n}{line} \PY{o+ow}{in} \PY{n}{all\PYZus{}lines}\PY{p}{:}
+    \PY{k}{if} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{There}\PY{l+s+s2}{\PYZdq{}} \PY{o+ow}{in} \PY{n}{line}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{line}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+There are words.  There are sentences.  There are lines.
+
+There was even a blank line.
+
+    \end{Verbatim}
+
+    You can also further split up the lines with the \texttt{.split()}
+function available to any string object.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{for} \PY{n}{line} \PY{o+ow}{in} \PY{n}{all\PYZus{}lines}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{line}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+['This', 'is', 'just', 'a', 'normal', 'text', 'file.']
+['There', 'are', 'words.', 'There', 'are', 'sentences.', 'There', 'are',
+'lines.']
+[]
+['There', 'was', 'even', 'a', 'blank', 'line.']
+['After', 'this', 'sentence', 'is', 'the', 'end', 'of', 'the', 'file,',
+'usually', 'called', '"EOF".']
+    \end{Verbatim}
+
+    With this in mind, can you write a function to search the
+\texttt{TeraChemOutput.out} file (included in the \texttt{test\_data}
+folder) for every instance of ``RMS grad''?
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} Your code goes here!}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Now that you can find all the lines with ``RMS grad'' in them, can you
+extract the current value at each line and add it to a dataset?
+
+\emph{Hint: use the \texttt{append} function, and don't forget to
+convert from a string to a float!}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{dataset} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} Your code goes here!}
+\end{Verbatim}
+\end{tcolorbox}
+
+    If you were successful in finding, extracting, and storing the ``RMS
+grad'' value for each occurrence in the file, run the next cell to see
+that data plotted!
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{dataset}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[<matplotlib.lines.Line2D at 0x7fb50353f490>]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Images/output_16_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    You can see how useful parsing datafiles can be, especially when those
+datafiles aren't as neatly formatted as a CPPTRAJ output, or when there
+is lots of different kinds of data that you may not need or want at that
+moment.
+
+But what about writing your own outputs?
+
+\hypertarget{writing-files}{%
+\subsubsection{Writing Files}\label{writing-files}}
+
+To write to a file, you start in much the same way as reading, except
+you open the file in ``w'' or ``a'' mode. The file, if it doesn't
+already exist, will be created on \texttt{open} and saved on
+\texttt{close}, so again be sure to close every file you open.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{myfile} \PY{o}{=} \PY{n+nb}{open}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{test\PYZus{}data/writing\PYZus{}outputs.txt}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{w}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{myfile}\PY{o}{.}\PY{n}{write}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{This is the text I am writing. }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{myfile}\PY{o}{.}\PY{n}{write}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Notice how there is no newline after the last sentence... }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{myfile}\PY{o}{.}\PY{n}{write}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{You have to include the newline character explicitly when writing to a file.}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{myfile}\PY{o}{.}\PY{n}{write}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{myfile}\PY{o}{.}\PY{n}{write}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Like that!}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{myfile}\PY{o}{.}\PY{n}{close}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    You can also write data with specific formatting, producing nice neat
+columns of data that can make it easier to read and analyze. You can use
+string-formatting to specify the allowed width of sections of a line.
+
+Consider the following set of data:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{people} \PY{o}{=} \PY{p}{[}  \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Name}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Bobby}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{25}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Class}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{First\PYZhy{}Year}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{GPA}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mf}{3.95}\PY{p}{\PYZcb{}}\PY{p}{,}
+            \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Name}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Charlie}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{27}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Class}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Second\PYZhy{}Year}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{GPA}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mf}{3.87}\PY{p}{\PYZcb{}}\PY{p}{,}
+            \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Name}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{David}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{26}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Class}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{First\PYZhy{}Year}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{GPA}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{4}\PY{p}{\PYZcb{}}\PY{p}{]}
+
+\PY{n}{myfile} \PY{o}{=} \PY{n+nb}{open}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{test\PYZus{}data/people\PYZus{}test.txt}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{w}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{myfile}\PY{o}{.}\PY{n}{write}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Name}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZlt{}20}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Age}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}10}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Class}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZlt{}20}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{GPA}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}10}\PY{l+s+si}{\PYZcb{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{myfile}\PY{o}{.}\PY{n}{write}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k}{for} \PY{n}{person} \PY{o+ow}{in} \PY{n}{people}\PY{p}{:}
+    \PY{n}{myfile}\PY{o}{.}\PY{n}{write}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{person}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Name}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZlt{}20}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{n}{person}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Age}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}10}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{n}{person}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Class}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZlt{}20}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{n}{person}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{GPA}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}10.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{myfile}\PY{o}{.}\PY{n}{close}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    If you open the file we've just created, it should look like this:
+
+\begin{verbatim}
+Name                        Age Class                       GPA
+-------------------- ---------- -------------------- ----------
+Bobby                        25 First-Year               3.9500
+Charlie                      27 Second-Year              3.8700
+David                        26 First-Year               4.0000
+\end{verbatim}
+
+Notice that the first column is left justified and has empty spaces out
+to the specified length of 20 characters. Next, ``Age'' is
+right-justified with 10 spaces total. Class is left-justified again with
+twenty, and GPA is right-justified \emph{with trailing zeros}, which we
+specified with the \texttt{.4f} addition, indicating we wanted four
+decimal places and that the value is to be treated like a float. I also
+included some blank spaces between each of the variables being printed
+1) to show you where each section begins and ends, and 2) to illustrate
+how you should be careful when using justifications so you don't wind up
+with Age and Class stuck together as a single value.
+
+Also notice that there is a \texttt{\textbackslash{}n} character at the
+end of each line in the code. This ensures that the text file is
+properly separated by lines - python won't write what you don't tell it
+to write.
+
+What if we want to add to a file that already exists? Simple, use
+``append mode'', or open with ``a''.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{people} \PY{o}{=} \PY{p}{[}  \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Name}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Esther}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{24}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Class}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{First\PYZhy{}Year}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{GPA}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mf}{3.96}\PY{p}{\PYZcb{}}\PY{p}{,}
+            \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Name}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Frances}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{28}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Class}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Second\PYZhy{}Year}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{GPA}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mf}{3.99}\PY{p}{\PYZcb{}}\PY{p}{,}
+            \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Name}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Gloria}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{27}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Class}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{First\PYZhy{}Year}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{GPA}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{4}\PY{p}{\PYZcb{}}\PY{p}{]}
+
+\PY{n}{myfile} \PY{o}{=} \PY{n+nb}{open}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{test\PYZus{}data/people\PYZus{}test.txt}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{a}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k}{for} \PY{n}{person} \PY{o+ow}{in} \PY{n}{people}\PY{p}{:}
+    \PY{n}{myfile}\PY{o}{.}\PY{n}{write}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{person}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Name}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZlt{}20}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{n}{person}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Age}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}10}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{n}{person}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Class}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZlt{}20}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{n}{person}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{GPA}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}10.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{myfile}\PY{o}{.}\PY{n}{close}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Now if we reopen the file we created, we can see the addition of the
+next three people to the list! This can be useful for things like
+logging results over the course of a longer calculation, where you might
+not want the file to be kept open and in memory for the entire time, but
+still want to add to it on occasion.
+
+File I/O can help you find, organize, and process your data in a way
+that makes sense to you.

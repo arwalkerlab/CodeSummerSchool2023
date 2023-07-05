@@ -1,0 +1,74 @@
+\section{How Libraries and Header Files Work}
+Libraries and headers both allow you to add additional functionality to your programs without having to code them all from scratch. However, there are some differences between them.
+
+\subsection{Headers}
+Headers are plain-text files that contain information used in libraries, such as new data types, constants, library-specific classes, and function declarations.  Headers are added to programs with the \texttt{\#include} command that we're familiar with.  By convention, header files end in \texttt{.h}, 
+
+Below is an example header file.
+
+\begin{minted}{c++}
+// geometry.h
+#ifndef GEOMETRY_H // include guard
+#define GEOMETRY_H
+namespace geom
+{
+    const double PI = 3.1415;
+    class Circle 
+    {
+        double radius;
+      public:
+        void set_radius(double);
+        double area();
+        double circumference();
+    };
+}
+#endif /* GEOMETRY_H */
+\end{minted}
+
+There are a few important features to point out.  First, the three lines that act as "guards" are important to ensure that the compiler won't try to redefine things over and over, or bloat the final program with repeated functions.  The first part of the guard has the \texttt{\#ifndef} and \texttt{\#define} lines.  These two tell the compiler that if it has not already defined \texttt{GEOMETRY\_H}, it should do so.  In this way, even if you have a hundred different source files that use the header file, it will only be compiled and linked once.  The final guard, \texttt{\#endif}, concludes the instructions that followed the first two guards.  Everything between the guards is part of that particular header/library combination.
+
+Next is the \texttt{namespace geom} scope.  
+This is the same concept we encountered in the earlier lessons with \texttt{std::cout} or the later command \texttt{using namespace std;}.  
+In this case, a namespace called \texttt{geom} is created.  
+The class contained within that namespace would be called using \texttt{geom::Circle}, and any functions inside would use a similar call.  
+However, if our code includes \texttt{using namespace geom;} after including this header file, we can use the internal classes and functions without the \texttt{geom::} requirement, similar to how we are able to skip using \texttt{std::} in previous code examples.
+
+Headers can be written without namespaces, however you will want to be careful of your function, class, and variable names and be sure they don't conflict with anything else in use in any of the libraries or source codes you're using.  In general, it's recommended that anything you create be contained in a namespace.
+
+\subsection{Libraries}
+Libraries are sometimes already compiled into machine language and are not "human-readable" files.  Libraries are usually accessed during compilation of your main program as part of the linking process.  Many pre-compiled libraries are available for free, and learning their use can provide improved access to hardware-specific functionality or better algorithms without having to create them all yourself.  The source code for libraries is usually written in the same language and format as their associated header files.  Where headers had only declarations, library source files will have the complete function definition, class definitions, etc.
+
+Below is an example library source file to go with the above header file.
+
+\begin{minted}{c++}
+// geometry.cpp
+#include "geometry.h"
+void geom::Circle::set_radius(int r)
+{
+    radius = r;
+}
+void geom::Circle::area()
+{
+    return PI * radius * radius;
+}
+void geom::Circle::circumference()
+{
+    return PI * radius * 2.0;
+}
+\end{minted}
+
+With both the \texttt{geometry.h} and \texttt{geometry.cpp} files written, a main program file might look like the following.
+
+\begin{minted}{c++}
+#include <iostream>
+#include "geometry.h"
+
+int main()
+{
+    geom::Circle my_circle;
+    my_circle.set_radius(2.5);
+    std::cout << "Area of the circle is " << my_circle.area() << std::endl;
+    std::cout << "Circumference of the circle is " << my_circle.circumference() << std::endl;
+    return 0;
+}
+\end{minted}

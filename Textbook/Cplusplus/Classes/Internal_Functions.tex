@@ -1,0 +1,41 @@
+\section{Internal Functions}
+Internal functions are simply functions that act on variables inside the class.  An internal function may access internal variables in a class as well as take arguments like any other C++ function.  If we expand the example above, we can add in a function for the area and perimeter of the square class as callable functions.  Also included is a small \texttt{main()} function to show how these functions may be called.
+
+\begin{minted}{c++}
+#include <iostream>
+class Square
+{
+  private:
+    double edge;
+  public:
+    Square(double); 
+    ~Square();
+    double area();
+    double perimeter();
+};
+Square::Square(double length)
+{
+    edge = length;
+}
+Square::~Square()
+{
+    std::cout << "Goodbye, Square!" << std::endl;
+}
+double Square::area()
+{
+    return edge * edge;
+}
+double Square::perimeter()
+{
+    return edge * 4;
+}
+int main()
+{
+    Square my_square (5.2); 
+    /* The class definition "Square" is used like a datatype, 
+    like "int" or "double", then a variable name */
+    cout << "Area of the square is " << my_square.area() << endl;
+    cout << "Perimeter of the square is " << my_square.perimeter() << endl;
+    return 0;
+}
+\end{minted}

@@ -1,0 +1,13 @@
+\section{Private vs. Public}
+The \texttt{private} and \texttt{public} sections refer to portions of the class that may be accessed from outside the class itself, such as in the \texttt{main()} program.  Variables and functions in the \texttt{private} section of a class are only accessible by other functions inside the class.  Above, the length of the square is contained in the private variable \texttt{edge}, and the only time \texttt{edge} is modified is during the constructor, when the argument is passed into the function as part of the instantiation of the class.  All class functions may access private variables and other private functions, but anything private is inaccessible from outside the class.
+
+\begin{homework}
+Write a class to hold a set of atomic coordinates in a molecule.  Include a function to update the position of any individual atom by index, and a function to measure the distances between any two atoms by indices.
+\end{homework}
+
+\textbf{ALTERNATE OPTION}
+
+\begin{homework}
+Try rewriting functions we developed in Python using C++.  This can be practice on the topic of "porting", which is rewriting code from one language to another.  It's often done when an algorithm is shown to be fully functional, but a different language can provide additional benefits, such as faster runtimes or better parallelization options.
+\end{homework}
+

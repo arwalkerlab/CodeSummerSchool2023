@@ -1,0 +1,14 @@
+\section{Declarations}
+As mentioned above, declarations are shortened version of the function.  Think of them like a preview of the function.  They don't tell the whole story, but they give the compiler enough information to know what is going into the function and what should be coming back.  They are also extremely useful when writing multiple versions of a function.
+
+\textit{Why would we write multiple versions of a function?}
+
+There are occasions when certain code will work for some hardware or software, but not for others.  For example, there are scientific programs that use different mathematical libraries depending on what brand of processor is in the computer.  A programmer can write multiple versions of a function, with each version using specific libraries and internal instructions, so that when the program is being compiled, the only thing changing is the internal instructions of the function itself, and no additional changes need to be made to the main code base.
+
+Function declarations take the form shown below.
+
+\begin{minted}{c++}
+int myfunction(int var1, int var2);
+\end{minted}
+
+Note the semicolon ending the line, and a lack of any scope following the function.

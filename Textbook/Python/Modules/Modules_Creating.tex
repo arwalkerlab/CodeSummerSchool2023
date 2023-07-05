@@ -1,0 +1,93 @@
+\section{Creating a Module}
+As you progress in coding, you may find yourself with a whole pile of
+various tools and functions that do a wide array of useful things. It
+might become helpful to keep them all in a single location, but
+organized for easier access.
+
+Python modules can be made in a fairly straightforward way. Each module
+is contained inside a folder, and at a minimum there will be one file in
+the folder called \texttt{\_\_init\_\_.py}. This file must be present
+for the module to be imported, including any submodules. Any submodules
+should be their own folders, each with their own
+\texttt{\_\_init\_\_.py} inside, and so forth. This can be arbitrarily
+deep, but be careful not to go too far down a well of submodules.
+
+\begin{verbatim}
+MyModule/
+|- __init__.py
+|- Submodule1/
+|  |- __init__.py
+|  |- blueberry.py
+|  |- lemon_meringue.py
+|- Submodule2/
+   |- __init__.py
+   |- cherry.py
+   |- raspberry.py
+\end{verbatim}
+
+This structure allows multiple import options. Each
+\texttt{\_\_init\_\_.py} file needs to include its own import commands
+for subdirectories and files as well. The complexity of these files can
+be very low, simply importing the subfolders and files as they are
+named, or complex, including individual function definitions and
+specific actions that occur during import.
+
+The first level file, \texttt{MyModule/\_\_init\_\_.py}, would look
+something like this:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ Submodule1}
+\ImportTok{import}\NormalTok{ Submodule2}
+\end{Highlighting}
+\end{Shaded}
+
+And the second level file, \texttt{MyModule/Submodule1/\_\_init\_\_.py}
+would look like:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ blueberry }\ImportTok{as}\NormalTok{ bb}
+\ImportTok{import}\NormalTok{ lemon\_meringue }\ImportTok{as}\NormalTok{ lm}
+\end{Highlighting}
+\end{Shaded}
+
+which would lead to a user's script looking like this:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ sys}
+\NormalTok{sys.path.append(}\StringTok{"path/to/MyModule/location/"}\NormalTok{)}
+\ImportTok{import}\NormalTok{ MyModule }\ImportTok{as}\NormalTok{ mm}
+\NormalTok{mm.Submodule1.bb.function()}
+\NormalTok{mm.Submodule1.lm.other\_function()}
+\end{Highlighting}
+\end{Shaded}
+
+This is a fairly one-directional import structure. Each thing can really
+only import from below themselves in the module's structural heirarchy.
+However, what if a function in \texttt{cherry.py} needs to use
+\texttt{other\_function()} from \texttt{lemon\_meringue.py}? That's up
+one level, then over, and then back down a level. How do we get that
+\texttt{other\_function()} into \texttt{cherry.py}? Or what if
+\texttt{cherry.py} needed a function in \texttt{raspberry.py}?
+
+In the \texttt{cherry.py} file, we can include this line:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{from}\NormalTok{ ..Submodule1.lemon\_meringue }\ImportTok{import}\NormalTok{ other\_function}
+\ImportTok{from}\NormalTok{ .raspberry }\ImportTok{import}\NormalTok{ rasp\_function}
+\end{Highlighting}
+\end{Shaded}
+
+The dots before the modules are the key here. One dot before
+\texttt{raspberry} indicates that the file we're importing from is in
+the same directory as the current file. Two dots indicates we're up one
+level. Three dots would be up two levels, etc. We can go up levels and
+then do the normal imports of modules and submodules, including subfiles
+as well. This is particularly helpful when writing larger modules with
+lots of different tasks but use several of the same functions. It's not
+uncommon to have a particular set of functions that are used all over a
+module kept in a separate folder to prevent confusion, while also
+allowing them to be accessed by other submodules.

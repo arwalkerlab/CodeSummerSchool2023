@@ -1,0 +1,204 @@
+Modules are self-contained larger objects in Python that can be imported
+and used to make your code easier to manage, easier to read, and easier
+to modify. If you've used python at all (including the different scripts
+Dr.~Walker has provided at various stages of a project), you've seen and
+used modules already. The most easily recognized python modules are
+\texttt{numpy} and \texttt{matplotlib}, but there are hundreds more
+included by default with python, and thousands more available through
+various channels.
+\section{Structure of Modules}
+
+\hypertarget{importing-moduleslibraries}{%
+\subsubsection{Importing
+Modules/Libraries}\label{importing-moduleslibraries}}
+
+There are many ways to import modules into your code. The first example
+uses the command \texttt{import} to load in the module \texttt{numpy}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ numpy}
+\end{Highlighting}
+\end{Shaded}
+
+With \texttt{numpy} loaded like this, we can use any of the numpy
+functions and submodules by calling them appropriately. For example, to
+use \texttt{numpy}'s \texttt{linspace} function to get 1000 numbers
+between 0 and 1, we'd call it like this:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data }\OperatorTok{=}\NormalTok{ numpy.linspace(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1000}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+It's also common to see imports assigned to shorter variable names.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ numpy }\ImportTok{as}\NormalTok{ np}
+\end{Highlighting}
+\end{Shaded}
+
+This shortened name is the standard convention, and while in this case
+it saves only three letters, these assignments become cleaner and easier
+when working in larger and more complex modules like
+\texttt{matplotlib}, which has dozens of its own submodules. A common
+shortening we see is this:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ matplotlib.pyplot }\ImportTok{as}\NormalTok{ plt}
+\end{Highlighting}
+\end{Shaded}
+
+If you had to type \texttt{matplotlib.pyplot.plot(data)} every time you
+wanted to plot your data, it would get tedious \emph{and} introduce the
+possibility of typos and errors in the code.
+
+You may encounter some well-established conventions if you find yourself
+searching for various python-related code help on the internet. The
+following is a (very not comprehensive) list of some of these
+conventions.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ numpy }\ImportTok{as}\NormalTok{ np}
+\ImportTok{import}\NormalTok{ matplotlib.pyplot }\ImportTok{as}\NormalTok{ plt}
+\ImportTok{import}\NormalTok{ pandas }\ImportTok{as}\NormalTok{ pd}
+\ImportTok{import}\NormalTok{ mdanalysis }\ImportTok{as}\NormalTok{ mda}
+\ImportTok{import}\NormalTok{ pytraj }\ImportTok{as}\NormalTok{ pt}
+\ImportTok{import}\NormalTok{ parmed }\ImportTok{as}\NormalTok{ pmd}
+\end{Highlighting}
+\end{Shaded}
+
+Much of the import convention can be traced to the original
+documentation for the various modules.
+
+Another convention you may run across - especially if you're digging
+into any of Mark's code repositories on GitHub - is the use of CAPS to
+indicate module bases.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ numpy }\ImportTok{as}\NormalTok{ NP}
+\ImportTok{import}\NormalTok{ matplotlib.pyplot }\ImportTok{as}\NormalTok{ PLT}
+\ImportTok{import}\NormalTok{ glob }\ImportTok{as}\NormalTok{ G}
+\ImportTok{import}\NormalTok{ subprocess }\ImportTok{as}\NormalTok{ S}
+\end{Highlighting}
+\end{Shaded}
+
+\ldots{} and so forth. The specific naming convention you use is up to
+you, just as long as you don't mix up what you've imported. Personally,
+I use the caps solely because they stand out in the rest of my code,
+making it easier for me to keep track of where I'm pulling
+module-specific functionality into my own code.
+
+\hypertarget{importing-from-moduleslibraries}{%
+\subsubsection{Importing FROM
+Modules/Libraries}\label{importing-from-moduleslibraries}}
+
+Let's say there's a specific function in a much larger library that you
+want to use, but you don't need everything else that comes with it. This
+is usually because of things like module loading times. If a module is
+considerably larger than is reasonable, and it forces your computer to
+lag when importing it, you can consider a different approach. In the
+example below, there's a module called \texttt{glob}, which has a
+function called \texttt{glob()} (super helpful/original, I know). I
+don't want all of the module, just the function. So I'll import only the
+function like this:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{from}\NormalTok{ glob }\ImportTok{import}\NormalTok{ glob }\ImportTok{as}\NormalTok{ g}
+\end{Highlighting}
+\end{Shaded}
+
+Now I can use the \texttt{glob.glob()} function simply by using
+\texttt{g()}, and without having to load all the rest of the module with
+it. Another example some of you may have seen is the
+\texttt{gaussian\_filter} function from \texttt{scipy.ndimage}, which
+gets used to smooth out rough data into cleaner curves.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{from}\NormalTok{ scipy.ndimage }\ImportTok{import}\NormalTok{ gaussian\_filter}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{importing-a-module-without-a-name}{%
+\subsubsection{Importing a Module Without a
+Name}\label{importing-a-module-without-a-name}}
+
+While this is not something you should generally do, there are occasions
+where it might be easier to just import everything from a module without
+including the actual name assignment. I'm not a fan of this because it
+can have unexpected side effects if there are competing functions of the
+same name in different modules, but I feel it's better to make you aware
+in the first place.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{from}\NormalTok{ subprocess }\ImportTok{import} \OperatorTok{*}
+\end{Highlighting}
+\end{Shaded}
+
+This imports everything from the \texttt{subprocess} module without
+requiring the use of \texttt{subprocess.} before any of the
+function/submodule calls. Usually this is seen in code examples on the
+internet.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ subprocess}
+\NormalTok{proc }\OperatorTok{=}\NormalTok{ subprocess.Popen(}\StringTok{"ls {-}lrth"}\NormalTok{,shell}\OperatorTok{=}\VariableTok{True}\NormalTok{,stdout}\OperatorTok{=}\NormalTok{subprocess.PIPE, stderr}\OperatorTok{=}\NormalTok{subprocess.PIPE)}
+\end{Highlighting}
+\end{Shaded}
+
+becomes
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{from}\NormalTok{ subprocess }\ImportTok{import} \OperatorTok{*}
+\NormalTok{proc }\OperatorTok{=}\NormalTok{ Popen(}\StringTok{"ls {-}lrth"}\NormalTok{,shell}\OperatorTok{=}\VariableTok{True}\NormalTok{,stdout}\OperatorTok{=}\NormalTok{PIPE, stderr}\OperatorTok{=}\NormalTok{PIPE)}
+\end{Highlighting}
+\end{Shaded}
+
+Now this may seem shorter and cleaner, but in reality it exposes the
+user to potential problems. Consider some other libraries that have a
+very commonly-named \texttt{load()} function in them. Importing modules
+in this manner means that the \texttt{load()} function will
+\emph{always} be the last one loaded by your script. Better to be safe
+than sorry and not do this.
+
+\hypertarget{importing-files-as-modules}{%
+\subsubsection{Importing Files as
+Modules}\label{importing-files-as-modules}}
+
+Sometimes, we write functions or classes that are consistently useful
+for us, and rather than have to keep writing them into our code (or risk
+accidentally changing it in a way that makes it no longer useful), it
+can be very helpful to just load them from another file.
+
+Python has a default \texttt{PATH} that it looks in for modules when
+importing them. We can add directories to this path inside a python
+script and then import files/modules from that directory.
+
+Let's say we have a file full of functions we wrote called
+\texttt{utilities.py}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ sys}
+\NormalTok{sys.path.append(}\StringTok{"path/to/folder/with/file"}\NormalTok{)}
+\ImportTok{import}\NormalTok{ utilities}
+\end{Highlighting}
+\end{Shaded}
+
+Now we can use any of the functions we wrote by calling them like
+\texttt{utilities.myfunction()}. We can also use the same import tricks
+and shortcuts we've described above, like
+\texttt{import\ utilities\ as\ U} or even
+\texttt{from\ utilities\ import\ *}.
+
+I'm sure you can see where this is going\ldots{}

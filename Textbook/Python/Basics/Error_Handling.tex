@@ -1,0 +1,85 @@
+\section{Error Handling}
+Error handling refers to a set of instructions the program follows if it
+encounters an error. If you've gotten any kind of an error in python,
+you've seen error handling in action.
+
+What if you wanted to write code that would just take care of the
+problem if it encountered an error, rather than crashing and complaining
+to the user? If you can anticipate possible errors that may arise, you
+can account for them and work around them.
+
+Error handling in python is based first on the \texttt{try/except}
+commands. Let's look at the examples below.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{foobar} \PY{k}{as} \PY{n+nn}{fb}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Hello world!}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}, frame=single, framerule=2mm, rulecolor=\color{outerrorbackground}]
+\textcolor{ansi-red}{---------------------------------------------------------------------------}
+\textcolor{ansi-red}{ModuleNotFoundError}                       Traceback (most recent call last)
+\textcolor{ansi-green-intense}{\textbf{/home/mark/GH\_Repositories/CodingSummerSchool/Day05\_Python\_WrapUp/18\_Python\_Error\_Handling.ipynb Cell 2'}} in \textcolor{ansi-cyan}{<cell line: 1>}\textcolor{ansi-blue}{()}
+\textcolor{ansi-green}{----> <a href='vscode-notebook-cell:/home/mark/GH\_Repositories/CodingSummerSchool/Day05\_Python\_WrapUp/18\_Python\_Error\_Handling.ipynb\#ch0000000?line=0'>1</a>} import foobar as fb
+\textcolor{ansi-green-intense}{\textbf{      <a href='vscode-notebook-cell:/home/mark/GH\_Repositories/CodingSummerSchool/Day05\_Python\_WrapUp/18\_Python\_Error\_Handling.ipynb\#ch0000000?line=2'>3</a>}} print("Hello world!")
+
+\textcolor{ansi-red}{ModuleNotFoundError}: No module named 'foobar'
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{try}\PY{p}{:}
+    \PY{k+kn}{import} \PY{n+nn}{foobar} \PY{k}{as} \PY{n+nn}{fb}
+\PY{k}{except}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{foobar module is not available.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Hello world!}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+pytraj module is not available.
+Hello world!
+    \end{Verbatim}
+
+    In the first example, we tried to directly import a python module that
+doesn't exist (on the computer or even at all), and then print ``Hello
+World!'' But because \texttt{foobar} doesn't exist, python encountered
+an error and immediately crashed. In the second example, however, we
+included the \texttt{try/except} commands, which allows us to follow a
+specific set of instructions when the error is encountered, and then
+continue on with the program.
+
+I commonly use this in scripts and programs that I provide to the lab
+that use non-standard python libraries. For example, a script may use
+the \texttt{mdanalysis} library, which is not included with python by
+default.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{try}\PY{p}{:}
+    \PY{k+kn}{import} \PY{n+nn}{mdanalysis} \PY{k}{as} \PY{n+nn}{mda}
+\PY{k}{except}\PY{p}{:}
+    \PY{k+kn}{import} \PY{n+nn}{subprocess}
+    \PY{n}{subprocess}\PY{o}{.}\PY{n}{call}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{conda install \PYZhy{}y mdanalysis}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{shell}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+    \PY{k+kn}{import} \PY{n+nn}{mdanalysis} \PY{k}{as} \PY{n+nn}{mda}
+\end{Verbatim}
+\end{tcolorbox}
+
+    The cell above tries to import \texttt{mdanalysis}, and if it fails, it
+loads a standard python library called \texttt{subprocess}, then uses
+that to install \texttt{mdanalysis}. Once that has completed, the code
+continues and imports mdanalysis as though it were always there.
+
+Error handling can get more complex than this, with specific
+instructions being assigned to specific \textbf{types} of errors.
+
+If you wanted to be really mean, you could include a handling of the
+``KeyboardInterruptException'' to prevent your code from being killed by
+the usual \texttt{ctrl-C} method.
+
+But don't do that.

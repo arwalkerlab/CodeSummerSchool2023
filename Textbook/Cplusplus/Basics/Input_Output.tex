@@ -1,0 +1,20 @@
+\section{Input/Output}
+\paragraph{} The most basic functionality is input from and output to the terminal.  These are accomplished with \texttt{std::cin} and \texttt{std::cout}.  The following example prompts the user to enter an integer value, stores it, and then prints it back out.
+
+\begin{minted}{c++}
+#include <iostream>
+#include <cstdlib>
+int main()
+{
+    int my_integer;
+    std::cout << "Enter an integer: ";
+    std::cin >> my_integer;
+    std::cout << "You entered " << my_integer << std::endl;
+    return 0;
+}
+\end{minted}
+This example also introduces the next section on variables.
+
+\begin{homework}
+Try creating some small programs to deal with inputs and outputs from the terminal.  Don't forget to compile before trying to run the programs!
+\end{homework}
