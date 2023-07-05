@@ -1,0 +1,561 @@
+\chapter{Day 5 - Python Modules}
+Modules are self-contained larger objects in Python that can be imported
+and used to make your code easier to manage, easier to read, and easier
+to modify. If you've used python at all (including the different scripts
+Dr.~Walker has provided at various stages of a project), you've seen and
+used modules already. The most easily recognized python modules are
+\texttt{numpy} and \texttt{matplotlib}, but there are hundreds more
+included by default with python, and thousands more available through
+various channels.
+\section{Structure of Modules}
+
+\hypertarget{importing-moduleslibraries}{%
+\subsubsection{Importing
+Modules/Libraries}\label{importing-moduleslibraries}}
+
+There are many ways to import modules into your code. The first example
+uses the command \texttt{import} to load in the module \texttt{numpy}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ numpy}
+\end{Highlighting}
+\end{Shaded}
+
+With \texttt{numpy} loaded like this, we can use any of the numpy
+functions and submodules by calling them appropriately. For example, to
+use \texttt{numpy}'s \texttt{linspace} function to get 1000 numbers
+between 0 and 1, we'd call it like this:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data }\OperatorTok{=}\NormalTok{ numpy.linspace(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1000}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+It's also common to see imports assigned to shorter variable names.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ numpy }\ImportTok{as}\NormalTok{ np}
+\end{Highlighting}
+\end{Shaded}
+
+This shortened name is the standard convention, and while in this case
+it saves only three letters, these assignments become cleaner and easier
+when working in larger and more complex modules like
+\texttt{matplotlib}, which has dozens of its own submodules. A common
+shortening we see is this:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ matplotlib.pyplot }\ImportTok{as}\NormalTok{ plt}
+\end{Highlighting}
+\end{Shaded}
+
+If you had to type \texttt{matplotlib.pyplot.plot(data)} every time you
+wanted to plot your data, it would get tedious \emph{and} introduce the
+possibility of typos and errors in the code.
+
+You may encounter some well-established conventions if you find yourself
+searching for various python-related code help on the internet. The
+following is a (very not comprehensive) list of some of these
+conventions.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ numpy }\ImportTok{as}\NormalTok{ np}
+\ImportTok{import}\NormalTok{ matplotlib.pyplot }\ImportTok{as}\NormalTok{ plt}
+\ImportTok{import}\NormalTok{ pandas }\ImportTok{as}\NormalTok{ pd}
+\ImportTok{import}\NormalTok{ mdanalysis }\ImportTok{as}\NormalTok{ mda}
+\ImportTok{import}\NormalTok{ pytraj }\ImportTok{as}\NormalTok{ pt}
+\ImportTok{import}\NormalTok{ parmed }\ImportTok{as}\NormalTok{ pmd}
+\end{Highlighting}
+\end{Shaded}
+
+Much of the import convention can be traced to the original
+documentation for the various modules.
+
+Another convention you may run across - especially if you're digging
+into any of Mark's code repositories on GitHub - is the use of CAPS to
+indicate module bases.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ numpy }\ImportTok{as}\NormalTok{ NP}
+\ImportTok{import}\NormalTok{ matplotlib.pyplot }\ImportTok{as}\NormalTok{ PLT}
+\ImportTok{import}\NormalTok{ glob }\ImportTok{as}\NormalTok{ G}
+\ImportTok{import}\NormalTok{ subprocess }\ImportTok{as}\NormalTok{ S}
+\end{Highlighting}
+\end{Shaded}
+
+\ldots{} and so forth. The specific naming convention you use is up to
+you, just as long as you don't mix up what you've imported. Personally,
+I use the caps solely because they stand out in the rest of my code,
+making it easier for me to keep track of where I'm pulling
+module-specific functionality into my own code.
+
+\hypertarget{importing-from-moduleslibraries}{%
+\subsubsection{Importing FROM
+Modules/Libraries}\label{importing-from-moduleslibraries}}
+
+Let's say there's a specific function in a much larger library that you
+want to use, but you don't need everything else that comes with it. This
+is usually because of things like module loading times. If a module is
+considerably larger than is reasonable, and it forces your computer to
+lag when importing it, you can consider a different approach. In the
+example below, there's a module called \texttt{glob}, which has a
+function called \texttt{glob()} (super helpful/original, I know). I
+don't want all of the module, just the function. So I'll import only the
+function like this:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{from}\NormalTok{ glob }\ImportTok{import}\NormalTok{ glob }\ImportTok{as}\NormalTok{ g}
+\end{Highlighting}
+\end{Shaded}
+
+Now I can use the \texttt{glob.glob()} function simply by using
+\texttt{g()}, and without having to load all the rest of the module with
+it. Another example some of you may have seen is the
+\texttt{gaussian\_filter} function from \texttt{scipy.ndimage}, which
+gets used to smooth out rough data into cleaner curves.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{from}\NormalTok{ scipy.ndimage }\ImportTok{import}\NormalTok{ gaussian\_filter}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{importing-a-module-without-a-name}{%
+\subsubsection{Importing a Module Without a
+Name}\label{importing-a-module-without-a-name}}
+
+While this is not something you should generally do, there are occasions
+where it might be easier to just import everything from a module without
+including the actual name assignment. I'm not a fan of this because it
+can have unexpected side effects if there are competing functions of the
+same name in different modules, but I feel it's better to make you aware
+in the first place.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{from}\NormalTok{ subprocess }\ImportTok{import} \OperatorTok{*}
+\end{Highlighting}
+\end{Shaded}
+
+This imports everything from the \texttt{subprocess} module without
+requiring the use of \texttt{subprocess.} before any of the
+function/submodule calls. Usually this is seen in code examples on the
+internet.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ subprocess}
+\NormalTok{proc }\OperatorTok{=}\NormalTok{ subprocess.Popen(}\StringTok{"ls {-}lrth"}\NormalTok{,shell}\OperatorTok{=}\VariableTok{True}\NormalTok{,stdout}\OperatorTok{=}\NormalTok{subprocess.PIPE, stderr}\OperatorTok{=}\NormalTok{subprocess.PIPE)}
+\end{Highlighting}
+\end{Shaded}
+
+becomes
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{from}\NormalTok{ subprocess }\ImportTok{import} \OperatorTok{*}
+\NormalTok{proc }\OperatorTok{=}\NormalTok{ Popen(}\StringTok{"ls {-}lrth"}\NormalTok{,shell}\OperatorTok{=}\VariableTok{True}\NormalTok{,stdout}\OperatorTok{=}\NormalTok{PIPE, stderr}\OperatorTok{=}\NormalTok{PIPE)}
+\end{Highlighting}
+\end{Shaded}
+
+Now this may seem shorter and cleaner, but in reality it exposes the
+user to potential problems. Consider some other libraries that have a
+very commonly-named \texttt{load()} function in them. Importing modules
+in this manner means that the \texttt{load()} function will
+\emph{always} be the last one loaded by your script. Better to be safe
+than sorry and not do this.
+
+\hypertarget{importing-files-as-modules}{%
+\subsubsection{Importing Files as
+Modules}\label{importing-files-as-modules}}
+
+Sometimes, we write functions or classes that are consistently useful
+for us, and rather than have to keep writing them into our code (or risk
+accidentally changing it in a way that makes it no longer useful), it
+can be very helpful to just load them from another file.
+
+Python has a default \texttt{PATH} that it looks in for modules when
+importing them. We can add directories to this path inside a python
+script and then import files/modules from that directory.
+
+Let's say we have a file full of functions we wrote called
+\texttt{utilities.py}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ sys}
+\NormalTok{sys.path.append(}\StringTok{"path/to/folder/with/file"}\NormalTok{)}
+\ImportTok{import}\NormalTok{ utilities}
+\end{Highlighting}
+\end{Shaded}
+
+Now we can use any of the functions we wrote by calling them like
+\texttt{utilities.myfunction()}. We can also use the same import tricks
+and shortcuts we've described above, like
+\texttt{import\ utilities\ as\ U} or even
+\texttt{from\ utilities\ import\ *}.
+
+I'm sure you can see where this is going\ldots{}
+\section{Creating a Module}
+As you progress in coding, you may find yourself with a whole pile of
+various tools and functions that do a wide array of useful things. It
+might become helpful to keep them all in a single location, but
+organized for easier access.
+
+Python modules can be made in a fairly straightforward way. Each module
+is contained inside a folder, and at a minimum there will be one file in
+the folder called \texttt{\_\_init\_\_.py}. This file must be present
+for the module to be imported, including any submodules. Any submodules
+should be their own folders, each with their own
+\texttt{\_\_init\_\_.py} inside, and so forth. This can be arbitrarily
+deep, but be careful not to go too far down a well of submodules.
+
+\begin{verbatim}
+MyModule/
+|- __init__.py
+|- Submodule1/
+|  |- __init__.py
+|  |- blueberry.py
+|  |- lemon_meringue.py
+|- Submodule2/
+   |- __init__.py
+   |- cherry.py
+   |- raspberry.py
+\end{verbatim}
+
+This structure allows multiple import options. Each
+\texttt{\_\_init\_\_.py} file needs to include its own import commands
+for subdirectories and files as well. The complexity of these files can
+be very low, simply importing the subfolders and files as they are
+named, or complex, including individual function definitions and
+specific actions that occur during import.
+
+The first level file, \texttt{MyModule/\_\_init\_\_.py}, would look
+something like this:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ Submodule1}
+\ImportTok{import}\NormalTok{ Submodule2}
+\end{Highlighting}
+\end{Shaded}
+
+And the second level file, \texttt{MyModule/Submodule1/\_\_init\_\_.py}
+would look like:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ blueberry }\ImportTok{as}\NormalTok{ bb}
+\ImportTok{import}\NormalTok{ lemon\_meringue }\ImportTok{as}\NormalTok{ lm}
+\end{Highlighting}
+\end{Shaded}
+
+which would lead to a user's script looking like this:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ sys}
+\NormalTok{sys.path.append(}\StringTok{"path/to/MyModule/location/"}\NormalTok{)}
+\ImportTok{import}\NormalTok{ MyModule }\ImportTok{as}\NormalTok{ mm}
+\NormalTok{mm.Submodule1.bb.function()}
+\NormalTok{mm.Submodule1.lm.other\_function()}
+\end{Highlighting}
+\end{Shaded}
+
+This is a fairly one-directional import structure. Each thing can really
+only import from below themselves in the module's structural heirarchy.
+However, what if a function in \texttt{cherry.py} needs to use
+\texttt{other\_function()} from \texttt{lemon\_meringue.py}? That's up
+one level, then over, and then back down a level. How do we get that
+\texttt{other\_function()} into \texttt{cherry.py}? Or what if
+\texttt{cherry.py} needed a function in \texttt{raspberry.py}?
+
+In the \texttt{cherry.py} file, we can include this line:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{from}\NormalTok{ ..Submodule1.lemon\_meringue }\ImportTok{import}\NormalTok{ other\_function}
+\ImportTok{from}\NormalTok{ .raspberry }\ImportTok{import}\NormalTok{ rasp\_function}
+\end{Highlighting}
+\end{Shaded}
+
+The dots before the modules are the key here. One dot before
+\texttt{raspberry} indicates that the file we're importing from is in
+the same directory as the current file. Two dots indicates we're up one
+level. Three dots would be up two levels, etc. We can go up levels and
+then do the normal imports of modules and submodules, including subfiles
+as well. This is particularly helpful when writing larger modules with
+lots of different tasks but use several of the same functions. It's not
+uncommon to have a particular set of functions that are used all over a
+module kept in a separate folder to prevent confusion, while also
+allowing them to be accessed by other submodules.
+\section{Unit Tests}
+It's important when creating programs to ensure each function works
+properly on its own and as part of the larger ecosystem. For this
+purpose, we'll use \texttt{pytest}, though there are other options out
+there.
+
+You can create a test script with your modules to ensure that each
+function you make does its specific task appropriately. Each test
+function should be preceded by \texttt{test\_} for pytest to detect and
+run them.
+
+Any test scripts should include the same prefix as well. These rules
+ensure that \texttt{pytest} discovers the tests it is expected to run
+without trying to treat other files and functions as tests.
+
+A common approach to testing is to have a specific folder for tests in
+the main module directory, with any necessary test data and scripts held
+inside.
+
+The next cell will check to see if you have \texttt{pytest} installed,
+and if not, will install it for you. It should only need to run once.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{try}\PY{p}{:}
+    \PY{k+kn}{import} \PY{n+nn}{pytest}
+\PY{k}{except}\PY{p}{:}
+    \PY{o}{!}pip install \PYZhy{}U pytest
+    \PY{k+kn}{import} \PY{n+nn}{pytest}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{tests-and-the-assert-function}{%
+\paragraph{\texorpdfstring{Tests and the \texttt{assert}
+function}{Tests and the assert function}}\label{tests-and-the-assert-function}}
+
+Pytest makes use of the built-in \texttt{assert} function in python.
+Assert makes a comparison between two values and returns a \texttt{True}
+or \texttt{False}, which gets interpreted as a pass/fail in the test
+environment.
+
+Consider the following functions in a script called
+\texttt{test\_mystuff.py} (the cell below is the same as the contents of
+that file.)
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{cool\PYZus{}function}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}We expect this function to return the numerical product of two numbers x and y.\PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{k}{return} \PY{n}{x}\PY{o}{*}\PY{n}{y}
+
+\PY{k}{def} \PY{n+nf}{test\PYZus{}cool\PYZus{}function\PYZus{}pass1}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{k}{assert} \PY{n}{cool\PYZus{}function}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{12}  \PY{c+c1}{\PYZsh{}\PYZsh{} SHOULD PASS}
+\PY{k}{def} \PY{n+nf}{test\PYZus{}cool\PYZus{}function\PYZus{}pass2}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{k}{assert} \PY{n}{cool\PYZus{}function}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{8}  \PY{c+c1}{\PYZsh{}\PYZsh{} SHOULD PASS}
+\PY{k}{def} \PY{n+nf}{test\PYZus{}cool\PYZus{}function\PYZus{}pass3}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{k}{assert} \PY{n}{cool\PYZus{}function}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{16}  \PY{c+c1}{\PYZsh{}\PYZsh{} SHOULD PASS}
+\PY{k}{def} \PY{n+nf}{test\PYZus{}cool\PYZus{}function\PYZus{}fail1}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{k}{assert} \PY{n}{cool\PYZus{}function}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{11}  \PY{c+c1}{\PYZsh{}\PYZsh{} SHOULD FAIL}
+\PY{k}{def} \PY{n+nf}{test\PYZus{}cool\PYZus{}function\PYZus{}pass4}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{k}{assert} \PY{n}{cool\PYZus{}function}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{100}  \PY{c+c1}{\PYZsh{}\PYZsh{} SHOULD PASS}
+\PY{k}{def} \PY{n+nf}{test\PYZus{}cool\PYZus{}function\PYZus{}pass5}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{k}{assert} \PY{n}{cool\PYZus{}function}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{15}  \PY{c+c1}{\PYZsh{}\PYZsh{} SHOULD PASS}
+\end{Verbatim}
+\end{tcolorbox}
+
+    With the function we wrote and the test functions, we can run
+\texttt{pytest} in the directory and it will find any and all test
+files, and any test functions, and check them for us. The following cell
+will do this for us and print out the results. Keep in mind, we wrote
+one of our tests to intentionally fail - this is to show you what it
+will look like so you'll know how to recognize it in the future.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} In Jupyter/VSCode notebook environments, the ! before a normal shell command }
+\PY{c+c1}{\PYZsh{} will direct the notebook to run that line in the shell environment rather }
+\PY{c+c1}{\PYZsh{} than as a python command.}
+\PY{o}{!}pytest 
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\textbf{============================= test session starts
+==============================}
+platform linux -- Python 3.9.7, pytest-7.1.2, pluggy-0.13.1
+rootdir: /home/mark/GH\_Repositories/CodingSummerSchool/Day04\_Python\_Modules
+plugins: anyio-2.2.0
+collected 6 items
+
+
+test\_mystuff.py
+\textcolor{ansi-green}{.}\textcolor{ansi-green}{.}\textcolor{ansi-green}{.}\textcolor{ansi-red}{F}\textcolor{ansi-green}{.}\textcolor{ansi-green}{.}\textcolor{ansi-red}{
+[100\%]}
+
+=================================== FAILURES ===================================
+\textcolor{ansi-red-intense}{\textbf{\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ test\_cool\_function\_fail1
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_}}
+
+    \textcolor{ansi-blue-intense}{def} \textcolor{ansi-green-intense}{test\_cool\_function\_fail1}():
+>       \textcolor{ansi-blue-intense}{assert}
+cool\_function(\textcolor{ansi-blue-intense}{3},\textcolor{ansi-blue-intense}{4}) == \textcolor{ansi-blue-intense}{11}
+\textcolor{ansi-red-intense}{\textbf{E       assert 12 == 11}}
+\textcolor{ansi-red-intense}{\textbf{E        +  where 12 = cool\_function(3, 4)}}
+
+\textcolor{ansi-red-intense}{\textbf{test\_mystuff.py}}:12: AssertionError
+=========================== short test summary info ============================
+FAILED test\_mystuff.py::test\_cool\_function\_fail1 - assert 12 == 11
+\textcolor{ansi-red}{========================= }\textcolor{ansi-red-intense}{\textbf{1 failed}}, \textcolor{ansi-green}{5 passed}\textcolor{ansi-red}{ in
+0.04s}\textcolor{ansi-red}{ ==========================}
+    \end{Verbatim}
+
+    Notice the first section, which lists the file that was tested
+(\texttt{test\_mystuff.py}), and lists the passes and failures in order
+with the dot/``F''. It also shows that \texttt{pytest} completed 100\%
+of the file. Below, you see the more detailed report on the failures
+(nothing is given for the passes by default because\ldots{} they
+passed).
+
+The failures are shown so that you can see exactly \emph{where} a
+function failed. You can use this method to test complex constructs like
+classes as well, by simply having multiple \texttt{assert} commands in
+your test functions. Here's another example with a basic class. The
+following cell is also in \texttt{test\_myclass.py}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{class} \PY{n+nc}{Person}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{name}\PY{p}{,}\PY{n}{age}\PY{p}{,}\PY{n}{university}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{name} \PY{o}{=} \PY{n}{name}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{age} \PY{o}{=} \PY{n}{age}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{uni} \PY{o}{=} \PY{n}{university}
+
+\PY{k}{def} \PY{n+nf}{test\PYZus{}Person\PYZus{}PASS}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{n}{test} \PY{o}{=} \PY{n}{Person}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Mark}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+m+mi}{37}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Wayne State University}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{k}{assert} \PY{n}{test}\PY{o}{.}\PY{n}{name} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Mark}\PY{l+s+s2}{\PYZdq{}}
+    \PY{k}{assert} \PY{n}{test}\PY{o}{.}\PY{n}{age} \PY{o}{==} \PY{l+m+mi}{37}
+    \PY{k}{assert} \PY{n}{test}\PY{o}{.}\PY{n}{uni} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Wayne State University}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{k}{def} \PY{n+nf}{test\PYZus{}Person\PYZus{}FAIL}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{n}{test} \PY{o}{=} \PY{n}{Person}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Mark}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+m+mi}{37}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Wayne State University}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{k}{assert} \PY{n}{test}\PY{o}{.}\PY{n}{name} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Mark}\PY{l+s+s2}{\PYZdq{}}
+    \PY{k}{assert} \PY{n}{test}\PY{o}{.}\PY{n}{age} \PY{o}{==} \PY{l+m+mi}{37}
+    \PY{k}{assert} \PY{n}{test}\PY{o}{.}\PY{n}{uni} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Wayne State Universe}\PY{l+s+s2}{\PYZdq{}} \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} Notice how this is not correct.}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{!}pytest 
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\textbf{============================= test session starts
+==============================}
+platform linux -- Python 3.9.7, pytest-7.1.2, pluggy-0.13.1
+rootdir: /home/mark/GH\_Repositories/CodingSummerSchool/Day04\_Python\_Modules
+plugins: anyio-2.2.0
+collected 8 items
+
+
+test\_myclass.py \textcolor{ansi-green}{.}\textcolor{ansi-red}{F}\textcolor{ansi-red}{
+[ 25\%]}
+test\_mystuff.py
+\textcolor{ansi-green}{.}\textcolor{ansi-green}{.}\textcolor{ansi-green}{.}\textcolor{ansi-red}{F}\textcolor{ansi-green}{.}\textcolor{ansi-green}{.}\textcolor{ansi-red}{
+[100\%]}
+
+=================================== FAILURES ===================================
+\textcolor{ansi-red-intense}{\textbf{\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ test\_Person\_FAIL
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_}}
+
+    \textcolor{ansi-blue-intense}{def} \textcolor{ansi-green-intense}{test\_Person\_FAIL}():
+        test = Person(\textcolor{ansi-yellow}{"}\textcolor{ansi-yellow}{Mark}\textcolor{ansi-yellow}{"},[9
+4m37,\textcolor{ansi-yellow}{"}\textcolor{ansi-yellow}{Wayne State
+University}\textcolor{ansi-yellow}{"})
+        \textcolor{ansi-blue-intense}{assert} test.name ==
+\textcolor{ansi-yellow}{"}\textcolor{ansi-yellow}{Mark}\textcolor{ansi-yellow}{"}
+        \textcolor{ansi-blue-intense}{assert} test.age == \textcolor{ansi-blue-intense}{37}
+>       \textcolor{ansi-blue-intense}{assert} test.uni == \textcolor{ansi-yellow}{"}\textcolor{ansi-yellow}{Wayne State
+Universe}\textcolor{ansi-yellow}{"} \textcolor{ansi-black-intense}{\#\#\# Notice how this is not
+correct.}
+\textcolor{ansi-red-intense}{\textbf{E       AssertionError: assert 'Wayne State University' == 'Wayne State
+Universe'}}
+\textcolor{ansi-red-intense}{\textbf{E         - Wayne State Universe}}
+\textcolor{ansi-red-intense}{\textbf{E         ?                    \^{}}}
+\textcolor{ansi-red-intense}{\textbf{E         + Wayne State University}}
+\textcolor{ansi-red-intense}{\textbf{E         ?                    \^{}\^{}\^{}}}
+
+\textcolor{ansi-red-intense}{\textbf{test\_myclass.py}}:17: AssertionError
+\textcolor{ansi-red-intense}{\textbf{\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ test\_cool\_function\_fail1
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_}}
+
+    \textcolor{ansi-blue-intense}{def} \textcolor{ansi-green-intense}{test\_cool\_function\_fail1}():
+>       \textcolor{ansi-blue-intense}{assert}
+cool\_function(\textcolor{ansi-blue-intense}{3},\textcolor{ansi-blue-intense}{4}) == \textcolor{ansi-blue-intense}{11}
+\textcolor{ansi-red-intense}{\textbf{E       assert 12 == 11}}
+\textcolor{ansi-red-intense}{\textbf{E        +  where 12 = cool\_function(3, 4)}}
+
+\textcolor{ansi-red-intense}{\textbf{test\_mystuff.py}}:12: AssertionError
+=========================== short test summary info ============================
+FAILED test\_myclass.py::test\_Person\_FAIL - AssertionError: assert 'Wayne Stat{\ldots}
+FAILED test\_mystuff.py::test\_cool\_function\_fail1 - assert 12 == 11
+\textcolor{ansi-red}{========================= }\textcolor{ansi-red-intense}{\textbf{2 failed}}, \textcolor{ansi-green}{6 passed}\textcolor{ansi-red}{ in
+0.04s}\textcolor{ansi-red}{ ==========================}
+    \end{Verbatim}
+
+    The \texttt{pytest} run now also gives us a summary of the different
+files and their failures in addition to the more thorough breakdown of
+each failure. Pytest can be extremely useful in finding and fixing bugs
+in your code, especially as the code gets bigger and more complex.
+
+There are many more things you can do with pytest as you become more
+advanced in other aspects of python programming, such as testing error
+handling and making sure that the code handles user errors properly.
+
+\href{https://docs.pytest.org/_/downloads/en/latest/pdf/}{Pytest
+Documentation}
+
+You can also build test \emph{classes} in addition to test
+\emph{functions}. This can allow you to use more complex data structures
+with multiple test functions as well as ensure that the different
+functions of a class interact appropriately and correctly.
+
+In most code-heavy jobs, it is generally expected that you will include
+tests with code you write. Thus, it's good practice to write tests
+alongside your actual programs and functions. It'll also make it easier
+to spot problems early before they become larger problems that are
+harder to deal with because there are more functions and classes built
+upon them.
+\section{Python - The Final Project!}
+
+Work together to create a python module that can help lab members
+process, analyze, and present data from TeraChem calculations.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Ground State Optimization
+\item
+  Excited State Single Point Energy
+\item
+  Ground State Molecular Dynamics
+\item
+  Excited State Optimization
+\item
+  Excited State Molecular Dynamics
+\end{enumerate}
+
+Come up with some different things we want to know from each of these
+calculations, then write functions, classes, or modules to process the
+outputs from these different calculations and give us condensed reports
+or plots to make it easy to review.
+
+Figure out the parts of the process, create pseudocode, and build your
+program!
+

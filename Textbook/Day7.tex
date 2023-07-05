@@ -1,0 +1,206 @@
+\chapter{Day 7 - Functions}
+\begin{Goals}
+\begin{enumerate}
+    \item Understanding of function datatypes
+    \item Understanding the void function
+    \item Differentiate between function declarations and definitions
+    \item Identify and manage function arguments and returns
+    \item Understand pass-by-value and pass-by-reference, and when to use which
+\end{enumerate}
+\end{Goals}
+
+There are a few vocabulary terms we'll need to establish right away with functions, starting with \textbf{function}.
+
+In C++, a \textbf{function} is a set of instructions inside a scope that takes arguments as inputs, performs a task on them, and returns something back to wherever the function was called from.  A \textbf{function call} is the point in a program where the function you wrote elsewhere is being executed.  A function \textbf{definition} is where the instructions of the function are actually defined, and includes the return type, function name, arguments list (including data types for each argument), and the instructions within the scope of the function.  A function \textbf{declaration} is a truncated form of a definition, which doesn't include any of the instructions, and is meant more to alert the compiler that a function exists with those parameters and is simply defined elsewhere.  Without declarations, every function \textbf{MUST} be defined before they are called, and this can become difficult in more complex codebases.
+
+\section{Function Types}
+The most important thing to remember about functions in C++ is that every function must have a \textbf{return type}.  These are data types like \texttt{int},\texttt{double}, and \texttt{void}, and correspond to the type of return each function is expected to send back to wherever it was called from.  Every function must have a return, with \texttt{void} functions being the only exception.  Look at some example functions below (these are not complete programs, just the function code).
+
+\begin{minted}{c++}
+int add_integers(int var1, int var2)
+{ 
+    int answer;
+    answer = var1 + var2;
+    return answer;
+}
+double multiply_doubles(double var1, double var2)
+{ 
+    double answer;
+    answer = var1 * var2;
+    return answer;
+}
+\end{minted}
+
+The first function, \texttt{add\_integers} is defined with the \texttt{int} return type.  Note that inside the scope, the variable being returned (\texttt{answer}) is also of the \texttt{int} type.  This is important to remember, as trying to return one variable type from a function that is defined with another will cause a compiler error and your program won't run.  The same is true for the second function, \texttt{multiply\_doubles}.  Also note that each function takes arguments of the same name, but with different types.  As we've discussed before, in C++ it is important to keep track of the variable types you're working with.  This is also one of the reasons that functions are so useful - once the internal code of the function is correct, you don't have to worry so much about the internal variable types.  Any variable type that you have access to (including variable types you create in your code) can be used as function types.
+
+\subsection{Void Functions}
+\texttt{Void} functions are generally used for functions that will manipulate or modify variables directly, or will interact with external files, but don't need to send anything back to the original point of where it was called.  Aside from that distinction, however, \texttt{void} functions can be treated very much like any other function.
+
+\begin{minted}{c++}
+void print_string(string my_string_var)
+{
+    cout << my_string_var << endl;
+}
+\end{minted}
+
+Note that in the above code block, there is no return command in the function.  The function takes the arguments given, performs a set of instructions with the arguments, and since there is nothing that needs to be sent back from the function, the \texttt{void} function type is the correct choice.
+
+\section{Declarations}
+As mentioned above, declarations are shortened version of the function.  Think of them like a preview of the function.  They don't tell the whole story, but they give the compiler enough information to know what is going into the function and what should be coming back.  They are also extremely useful when writing multiple versions of a function.
+
+\textit{Why would we write multiple versions of a function?}
+
+There are occasions when certain code will work for some hardware or software, but not for others.  For example, there are scientific programs that use different mathematical libraries depending on what brand of processor is in the computer.  A programmer can write multiple versions of a function, with each version using specific libraries and internal instructions, so that when the program is being compiled, the only thing changing is the internal instructions of the function itself, and no additional changes need to be made to the main code base.
+
+Function declarations take the form shown below.
+
+\begin{minted}{c++}
+int myfunction(int var1, int var2);
+\end{minted}
+
+Note the semicolon ending the line, and a lack of any scope following the function.
+
+\section{Definitions}
+Definitions are the complete set of instructions for a function.  They begin just like a declaration, except that instead of a semicolon, they have the open- and close-curly braces with the full set of commands inside.
+
+\begin{minted}{c++}
+int myfunction(int var1, int var2)
+{
+  // I can have comments inside the function as well.
+  // In fact, I really should have comments inside functions to help other programmers know what's happening.
+  int answer;
+  answer = var1 + var2;
+  return answer;
+}
+\end{minted}
+
+The full function definition above has the return type, arguments, and complete instructions inside the scope, ending with the return value.
+
+\section{Arguments}
+Arguments are the pieces of information we're passing to the function inside the parentheses whenever we call it.  Each argument needs its own datatype.  There are two ways in which arguments may be passed to a function, and both have very specific outcomes.  In general, it's a good idea to use the first unless you specifically \textbf{need} to use the second.
+
+\subsection{Pass-By-Value}
+The first method of argument passing is called "pass-by-value", and is the standard way of sending information to a function.  Let's see an example below.
+
+\begin{minted}{c++}
+#include <iostream>
+#include <cstdlib>
+#include <cstring>
+
+using namespace std;
+
+double multiply(double var1, double var2);
+void print_this(string var1);
+
+int main()
+{
+        double my_var1, my_var2;
+        my_var1 = 10.5;
+        my_var2 = 2.0;
+        double answer;
+        cout << "The values are " << my_var1 << " and " << my_var2 << endl;
+        answer = multiply(my_var1,my_var2);
+        cout << "The result is " << answer << endl;
+        cout << "The values are " << my_var1 << " and " << my_var2 << endl;
+        print_this("random string");
+        return 0;
+}
+
+double multiply(double var1, double var2)
+{
+        double answer;
+        answer = var1*var2;
+        cout << "changing var1 to something else" << endl;
+        var1 = 55.3;
+        cout << "var1 is now " << var1 << endl;
+        return answer;
+
+}
+
+void print_this(string var1)
+{
+        cout << "Passed variable was: " << var1 << endl;
+        // NOTE THE LACK OF RETURN HERE!
+}
+\end{minted}
+
+This code block shows us two different functions, both using pass-by-value.  What this means is that the program sends the value of the variable to the function, \textit{not the variable itself}.  Think of it like sending a copy of the static value at the time of the function call, rather than the original.  Pass-by-value maintains the scope of the variables.  In the \texttt{main()} function above, the line that reads \texttt{answer = multiple(my\_var1,my\_var2)} is interpreted at execution to be \texttt{answer = multiple(10.5,2.0)}.  If we compile and run the code block above, we will see that the value of \texttt{my\_var1} and \texttt{my\_var2} do not change during the execution of the function itself, even though the value inside the function does change.
+\subsection{Pass-By-Reference}
+Pass-by-reference allows us to modify variables inside a function and have those modifications hold after exiting that function.  The function, rather than taking the \textbf{value} of the variable being passed, takes the \textbf{memory location} of the variable, and changes the data at that location.  Pass-by-reference is signified by including the ampersand (\&) character with the variable name in the function declaration and definition.  Let's look at the above code block after modifying it to be pass-by-reference.
+
+\begin{minted}{c++}
+#include <iostream>
+#include <cstdlib>
+#include <cstring>
+
+using namespace std;
+
+double multiply(double &var1, double &var2);
+void print_this(string var1);
+
+int main()
+{
+        double my_var1, my_var2;
+        my_var1 = 10.5;
+        my_var2 = 2.0;
+        double answer;
+        cout << "The values are " << my_var1 << " and " << my_var2 << endl;
+        answer = multiply(my_var1,my_var2);
+        cout << "The result is " << answer << endl;
+        cout << "The values are " << my_var1 << " and " << my_var2 << endl;
+        print_this("random string");
+        return 0;
+}
+
+double multiply(double &var1, double &var2)
+{
+        double answer;
+        answer = var1*var2;
+        cout << "changing var1 to something else" << endl;
+        var1 = 55.3;
+        cout << "var1 is now " << var1 << endl;
+        return answer;
+
+}
+
+void print_this(string var1)
+{
+        cout << "Passed variable was: " << var1 << endl;
+        // NOTE THE LACK OF RETURN HERE!
+}
+\end{minted}
+
+Note that this code block is almost identical to the previous example, except for the declaration and definition of \texttt{multiply(double \&var1, double \&var2)}, which now has the \& character included.  If we compiled and ran this code, we would see the value of my\_var1 would actually be changed in the main program after modification in the \texttt{multiply} function.
+
+The most common use for pass-by-reference functions is when you have multiple values that need to be changed and that cannot be passed back as a single variable object.  For example, in a molecular dynamics program, a function may be written to update information about a single atom.  The information may include position (3 variables), velocity (3 variables), net force on the atom (3 variables), and so on.  Additionally, pass-by-reference can be better for memory management, as your program will not require additional memory overhead to store the temporary copies of data inside each function that uses it.
+
+\begin{homework}
+\paragraph{}Practice writing some small functions for the following scientific equations. Think about what needs to be passed to the function and what can be defined internally or used as a constant.
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+$P = nRT/V$ & $P$ = Pressure \\
+& $n$ = number of particles (in mol)\\
+& $R$ = gas constant \\
+& $T$ = temperature \\
+& $V$ = volume \\ \hline
+
+$\langle T\rangle = -\frac{1}{2}\sum\limits_{k=1}^{N}\langle F_k \cdot r_k \rangle$ & 
+$\langle T\rangle$ = Total Kinetic Energy \\
+& $N$ = number of particles \\
+& $F_k$ = force on the $k$th particle \\
+& $r_k$ = position of the $k$th particle \\ \hline
+
+$k = Ae^{\frac{-E_a}{RT}}$ & $k$ = rate constant \\
+& $A$ = pre-exponential factor \\
+& $E_a$ = activation energy \\
+& $R$ = gas constant \\
+& $T$ = temperature \\
+
+\hline
+\end{tabular}
+\end{center}
+
+Feel free to come up with other equations to convert to functions, and don't forget to comment your code!
+\end{homework}

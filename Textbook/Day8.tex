@@ -1,0 +1,80 @@
+\chapter{Day 8 - Classes}
+Classes in C++ are similar to what we've previously covered in the Python section.  They are objects that can hold multiple types of data and internal functions.  Classes are often used for larger and more complex problems, however they can be as simple as you want.
+\section{Constructors and Destructors}
+Whenever a class is instantiated, the constructor is used.  This is analogous to python's \texttt{\_\_init\_\_()} function, in that it is a set of commands that are run the moment the class object is created.  Conversely, a destructor is a set of commands that are executed whenever the object is destroyed.  This includes any event where the memory is released, whether from a specific command inside the code, or when the program itself finishes execution and exits.
+
+By convention, constructors and destructors are named the same as their class, with the special addition of the \texttt{~} before the destructor's name.  See the example below.
+
+\begin{minted}{c++}
+class Square
+{
+  private:
+    double edge;
+  public:
+    Square(double); // constructor
+    ~Square();      // destructor
+};
+Square::Square(double length)
+{
+    edge = length;
+}
+Square::~Square()
+{
+    std::cout << "Goodbye, Square!" << endl;
+}
+\end{minted}
+\section{Internal Functions}
+Internal functions are simply functions that act on variables inside the class.  An internal function may access internal variables in a class as well as take arguments like any other C++ function.  If we expand the example above, we can add in a function for the area and perimeter of the square class as callable functions.  Also included is a small \texttt{main()} function to show how these functions may be called.
+
+\begin{minted}{c++}
+#include <iostream>
+class Square
+{
+  private:
+    double edge;
+  public:
+    Square(double); 
+    ~Square();
+    double area();
+    double perimeter();
+};
+Square::Square(double length)
+{
+    edge = length;
+}
+Square::~Square()
+{
+    std::cout << "Goodbye, Square!" << std::endl;
+}
+double Square::area()
+{
+    return edge * edge;
+}
+double Square::perimeter()
+{
+    return edge * 4;
+}
+int main()
+{
+    Square my_square (5.2); 
+    /* The class definition "Square" is used like a datatype, 
+    like "int" or "double", then a variable name */
+    cout << "Area of the square is " << my_square.area() << endl;
+    cout << "Perimeter of the square is " << my_square.perimeter() << endl;
+    return 0;
+}
+\end{minted}
+
+\section{Private vs. Public}
+The \texttt{private} and \texttt{public} sections refer to portions of the class that may be accessed from outside the class itself, such as in the \texttt{main()} program.  Variables and functions in the \texttt{private} section of a class are only accessible by other functions inside the class.  Above, the length of the square is contained in the private variable \texttt{edge}, and the only time \texttt{edge} is modified is during the constructor, when the argument is passed into the function as part of the instantiation of the class.  All class functions may access private variables and other private functions, but anything private is inaccessible from outside the class.
+
+\begin{homework}
+Write a class to hold a set of atomic coordinates in a molecule.  Include a function to update the position of any individual atom by index, and a function to measure the distances between any two atoms by indices.
+\end{homework}
+
+\textbf{ALTERNATE OPTION}
+
+\begin{homework}
+Try rewriting functions we developed in Python using C++.  This can be practice on the topic of "porting", which is rewriting code from one language to another.  It's often done when an algorithm is shown to be fully functional, but a different language can provide additional benefits, such as faster runtimes or better parallelization options.
+\end{homework}
+
