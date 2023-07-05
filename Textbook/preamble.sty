@@ -5,6 +5,9 @@
 \usepackage{placeins}
 \usepackage[toc,page]{appendix}
 \usepackage{etoolbox}
+
+\setcounter{tocdepth}{1}    % Set depth of ToC to "section" and above.
+
 \BeforeBeginEnvironment{minted}{\begin{tcolorbox}}%
 \AfterEndEnvironment{minted}{\end{tcolorbox}}%
 

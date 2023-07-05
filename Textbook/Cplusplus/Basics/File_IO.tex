@@ -5,7 +5,7 @@ Keep in mind that this is meant as an introduction to the concepts and not an ex
 
 It's important to remember that whenever you open any file in C++, you must close it at some point before the end of the program.  In python, there are instances where the closing of a file is automatic, so it's a little less strict.  In C++, that leniency is not there.  \textbf{Opened files must be closed.}
 
-\subsection{Reading Files}
+\subsection*{Reading Files}
 File I/O is largely controlled by the \texttt{fstream} library.  When opening a file for reading, we use the variable type \texttt{ifstream}, which is short for \textbf{i}nput-\textbf{f}ile-\textbf{stream}.  For files to be written, we use the variable type \texttt{ofstream}.
 
 \begin{minted}{c++}
@@ -142,7 +142,7 @@ int main()
 }
 \end{minted}
 
-\subsection{Writing Files}
+\subsection*{Writing Files}
 Writing files is similar to reading files in that you have to open and close the files appropriately.  Beyond that, however, writing to the file is much the same as outputting text to the terminal with \texttt{std::cout}.
 
 \begin{minted}{c++}
