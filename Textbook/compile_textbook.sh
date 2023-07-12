@@ -1,9 +1,9 @@
 #!/bin/bash
 
-pdflatex --interaction=nonstopmode main.tex
-pdflatex --interaction=nonstopmode main.tex
+pdflatex --shell-escape --interaction=nonstopmode main.tex
+pdflatex --shell-escape --interaction=nonstopmode main.tex
 bibtex main.aux
-pdflatex --interaction=nonstopmode main.tex
+pdflatex --shell-escape --interaction=nonstopmode main.tex
 
 mv main.pdf CodeSummerSchool2023.pdf
 rm main.aux

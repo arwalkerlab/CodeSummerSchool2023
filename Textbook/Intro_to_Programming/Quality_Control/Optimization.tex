@@ -32,16 +32,16 @@ Consider an example where you are comparing a variable to the square root of ano
 This might look like this:
 
 \begin{minted}{python}
-    if (n < sqrt(m)):
-        print("the condition is true")
+if (n < sqrt(m)):
+    print("the condition is true")
 \end{minted}
 
 The square root function is computationally expensive compared to the squaring function ($n^2$).
 This means, from a processor optimization standpoint, it would be cheaper to have the following:
 
 \begin{minted}{python}
-    if (n**2 < m):
-        print("the condition is true")
+if (n**2 < m):
+    print("the condition is true")
 \end{minted}
 
 This results in the same boolean expression (True or False), but the second example takes less computational power than the first.  
