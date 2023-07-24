@@ -79,6 +79,6 @@ int main()
 }
 \end{minted}
 
-You may also have noticed the use of \texttt{endl} rather than the newline character \texttt{"\\n"}.  These both produce a line break.  The only difference between them is that \texttt{endl} does something called "flushing the buffer", which means that the data stored in the output buffer is forced out into the main output.
+You may also have noticed the use of \texttt{endl} rather than the newline character \texttt{"\n"}.  These both produce a line break.  The only difference between them is that \texttt{endl} does something called "flushing the buffer", which means that the data stored in the output buffer is forced out into the main output.
 
 For most text-based things, this may not seem important.  But if you're writing things to a file in a loop, you might want to ensure that everything is written to the file as it's generated, rather than all at once at the end of the loop.  Using \texttt{endl} is the preferred option in this scenario, and it's ultimately easier.
